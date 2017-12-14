@@ -24,19 +24,19 @@ public class ViewProps {
   }
 }
 
-final public class View: HostComponent<ViewProps> {
-  override public func mountComponent(into container: UIView) -> UIView {
-    let view = UIView()
+final public class View: HostComponent<ViewProps, ViewHostView> {
+  override public func mountComponent() -> ViewHostView {
+    let view = ViewHostView()
     let layout = view.yoga
     layout.isEnabled = true
     if let style = props.style {
       style.applyTo(view: view)
     }
-    container.addSubview(view)
+//    container.addSubview(view)
     return view
   }
 
-  override public func updateComponent(view: UIView, prevProps: ViewProps) {
+  override public func updateComponent(view: ViewHostView, prevProps: ViewProps) {
 
   }
 

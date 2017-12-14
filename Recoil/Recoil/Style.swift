@@ -14,6 +14,7 @@ public enum Color {
   case raw(String)
   case uiColor(UIColor)
   case black
+  case white
   case clear
 
   func toUIColor() -> UIColor {
@@ -27,6 +28,8 @@ public enum Color {
       fatalError("Color.raw(String) is not implemented yet")
     case .black:
       return UIColor.black
+    case .white:
+      return UIColor.white
     case .clear:
       return UIColor.clear
     }
@@ -34,8 +37,23 @@ public enum Color {
 }
 
 final public class Style {
-  var backgroundColor: Color?
 
+  // Text-specific properties
+  var color: Color?
+  var fontSize: CGFloat = 17
+  var fontWeight: String?
+  var lineHeight: CGFloat?
+  var fontFamily: String?
+  var letterSpacing: CGFloat?
+  var textDecorationStyle: String? // enum
+  var textAlign: String? // enum
+  var textDecorationLine: String? // enum
+
+  // Non-Yoga properties
+  var backgroundColor: Color?
+  var opacity: CGFloat?
+
+  // Yoga Properties
   var direction: YGDirection?
   var flexDirection: YGFlexDirection?
   var justifyContent: YGJustify?
@@ -100,10 +118,31 @@ final public class Style {
 
   }
 
+  func applyTo(label: UILabel) {
+    applyTo(view: label)
+    if let color = color {
+      label.textColor = color.toUIColor()
+    }
+    var attributes: [UIFontDescriptor.AttributeName: Any] = [:]
+    if let fontFamily = fontFamily {
+      attributes[.family] = fontFamily
+    }
+//    attributes[.textStyle] = ""
+    let descriptor = UIFontDescriptor(fontAttributes: attributes)
+    let font = UIFont(descriptor: descriptor, size: fontSize)
+    label.font = font
+//    label.textAlignment
+//    label.shadowColor
+//    label.shadowOffset
+  }
+
   func applyTo(view: UIView) {
     applyTo(layout: view.yoga)
     if let backgroundColor = backgroundColor {
       view.backgroundColor = backgroundColor.toUIColor()
+    }
+    if let opacity = opacity {
+      view.alpha = opacity
     }
   }
 
@@ -160,15 +199,88 @@ final public class Style {
     if let maxHeight = maxHeight { layout.maxHeight = maxHeight }
   }
 
-  static func + (left: Style, right: Style) -> Style {
-    return merge(left, right)
+  public static func + (left: Style, right: Style) -> Style {
+    return merge(merge(Style(), left), right)
   }
 
-  static func merge(_ left: Style, _ right: Style) -> Style {
-    // TODO:
-    return Style()
+  static func merge(_ result: Style, _ toMerge: Style) -> Style {
+
+    // Non-Yoga props
+    if let backgroundColor = toMerge.backgroundColor { result.backgroundColor = backgroundColor }
+    if let color = toMerge.color { result.color = color }
+
+    // Yoga props
+    if let direction = toMerge.direction { result.direction = direction }
+    if let flexDirection = toMerge.flexDirection { result.flexDirection = flexDirection }
+    if let justifyContent = toMerge.justifyContent { result.justifyContent = justifyContent }
+    if let alignContent = toMerge.alignContent { result.alignContent = alignContent }
+    if let alignItems = toMerge.alignItems { result.alignItems = alignItems }
+    if let alignSelf = toMerge.alignSelf { result.alignSelf = alignSelf }
+    if let position = toMerge.position { result.position = position }
+    if let flexWrap = toMerge.flexWrap { result.flexWrap = flexWrap }
+    if let overflow = toMerge.overflow { result.overflow = overflow }
+    if let display = toMerge.display { result.display = display }
+    if let flexGrow = toMerge.flexGrow { result.flexGrow = flexGrow }
+    if let flexShrink = toMerge.flexShrink { result.flexShrink = flexShrink }
+    if let flexBasis = toMerge.flexBasis { result.flexBasis = flexBasis }
+    if let left = toMerge.left { result.left = left }
+    if let top = toMerge.top { result.top = top }
+    if let right = toMerge.right { result.right = right }
+    if let bottom = toMerge.bottom { result.bottom = bottom }
+    if let start = toMerge.start { result.start = start }
+    if let end = toMerge.end { result.end = end }
+    if let marginLeft = toMerge.marginLeft { result.marginLeft = marginLeft }
+    if let marginTop = toMerge.marginTop { result.marginTop = marginTop }
+    if let marginRight = toMerge.marginRight { result.marginRight = marginRight }
+    if let marginBottom = toMerge.marginBottom { result.marginBottom = marginBottom }
+    if let marginStart = toMerge.marginStart { result.marginStart = marginStart }
+    if let marginEnd = toMerge.marginEnd { result.marginEnd = marginEnd }
+    if let marginHorizontal = toMerge.marginHorizontal { result.marginHorizontal = marginHorizontal }
+    if let marginVertical = toMerge.marginVertical { result.marginVertical = marginVertical }
+    if let margin = toMerge.margin { result.margin = margin }
+    if let paddingLeft = toMerge.paddingLeft { result.paddingLeft = paddingLeft }
+    if let paddingTop = toMerge.paddingTop { result.paddingTop = paddingTop }
+    if let paddingRight = toMerge.paddingRight { result.paddingRight = paddingRight }
+    if let paddingBottom = toMerge.paddingBottom { result.paddingBottom = paddingBottom }
+    if let paddingStart = toMerge.paddingStart { result.paddingStart = paddingStart }
+    if let paddingEnd = toMerge.paddingEnd { result.paddingEnd = paddingEnd }
+    if let paddingHorizontal = toMerge.paddingHorizontal { result.paddingHorizontal = paddingHorizontal }
+    if let paddingVertical = toMerge.paddingVertical { result.paddingVertical = paddingVertical }
+    if let padding = toMerge.padding { result.padding = padding }
+    if let borderLeftWidth = toMerge.borderLeftWidth { result.borderLeftWidth = borderLeftWidth }
+    if let borderTopWidth = toMerge.borderTopWidth { result.borderTopWidth = borderTopWidth }
+    if let borderRightWidth = toMerge.borderRightWidth { result.borderRightWidth = borderRightWidth }
+    if let borderBottomWidth = toMerge.borderBottomWidth { result.borderBottomWidth = borderBottomWidth }
+    if let borderStartWidth = toMerge.borderStartWidth { result.borderStartWidth = borderStartWidth }
+    if let borderEndWidth = toMerge.borderEndWidth { result.borderEndWidth = borderEndWidth }
+    if let borderWidth = toMerge.borderWidth { result.borderWidth = borderWidth }
+    if let width = toMerge.width { result.width = width }
+    if let height = toMerge.height { result.height = height }
+    if let minWidth = toMerge.minWidth { result.minWidth = minWidth }
+    if let minHeight = toMerge.minHeight { result.minHeight = minHeight }
+    if let maxWidth = toMerge.maxWidth { result.maxWidth = maxWidth }
+    if let maxHeight = toMerge.maxHeight { result.maxHeight = maxHeight }
+
+    return result
   }
 
+
+
+  // Non-Yoga Setters
+  public func backgroundColor(_ value: Color) -> Self {
+    backgroundColor = value
+    return self
+  }
+
+  public func color(_ value: Color) -> Self {
+    color = value
+    return self
+  }
+
+
+
+
+  // Yoga convenience setters
   public func flex(_ value: CGFloat) -> Self {
     // In React Native flex does not work the same way that it does in CSS. flex is a number
     // rather than a string, and it works according to the Yoga library at https://github.com/facebook/yoga
@@ -203,15 +315,7 @@ final public class Style {
   }
 
 
-  public func backgroundColor(_ value: Color) -> Self {
-    backgroundColor = value
-    return self
-  }
-
-
-
-
-  // default setters
+  // Yoga default setters
   public func direction(_ value: YGDirection) -> Self {
     direction = value
     return self

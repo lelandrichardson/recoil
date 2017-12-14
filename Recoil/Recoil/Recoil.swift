@@ -8,55 +8,76 @@
 
 import Foundation
 
+/*
+ BIG TODOS:
 
-func mount(into view: UIView, element: Element) {
-  switch element {
-  case .string(let value):
-    mount(into: view, string: value)
-  case .component(let componentElement):
-    mount(into: view, component: componentElement)
-  case .host(let hostElement):
-    mount(into: view, hostElement: hostElement)
-  case .array(let elements):
-    for element in elements {
-      if let element = element {
-        mount(into: view, element: element)
-      }
-    }
-  default:
-    fatalError("unknown element enum encountered")
-  }
-}
+ - element keys
+ - refs
+ - proper handling of text children...
+ - proper handling of composed Text - View -> Text components
+ - functional components
+ - component state
+ - full lifecycle methods
+ - potentially throw all this work away and reimplement to mimic Fiber's architecture!
 
-func mount(into container: UIView, string: String) {
-  let label = UILabel()
-  label.text = string
-  container.addSubview(label)
-}
+ */
 
-func mount(into container: UIView, component: ComponentElement) {
-  let instance = component.type.init(props: component.props)
-  if let renderedElement = instance.render() {
-    mount(into: container, element: renderedElement)
-  }
-}
-
-func mount(into container: UIView, hostElement: HostElement) {
-  let instance = hostElement.type.init(props: hostElement.props)
-  let view = instance.mountComponent(into: container)
-  if let children = instance.renderChildren() {
-    mount(into: view, element: children)
-  }
-}
 
 public class Recoil {
   public static func render(_ element: Element, _ rootView: UIView) {
-    mount(into: rootView, element: element)
+
+    if let instance = rootView.recoilRoot {
+      // update
+      updateInstance(element, rootView, instance)
+    } else {
+      // mount
+      mountInstance(element, rootView)
+    }
+  }
+
+  public static func unmount(_ rootView: UIView) {
+    guard let instance = rootView.recoilRoot else {
+      fatalError()
+    }
+    unmountInstance(instance, rootView)
+  }
+
+
+
+  // MARK: private
+
+  private static func updateInstance(_ element: Element, _ rootView: UIView, _ instance: RecoilInstance) {
+    if (Reconciler.shouldUpdateComponent(prev: instance.currentElement, next: element)) {
+      // TODO(lmr): do the update
+    } else {
+      // Unmount and then mount the new one
+      unmountInstance(instance, rootView)
+      mountInstance(element, rootView)
+    }
+  }
+
+  private static func mountInstance(_ element: Element, _ rootView: UIView) {
+
+    let instance = Reconciler.instantiateComponent(element)
+
+    let view = Reconciler.mountComponent(instance: instance)
+
+     rootView.removeAllSubviews()
+
+    if let view = view {
+      rootView.addSubview(view)
+    }
+
+    // let yoga do its thing
     rootView.yoga.isEnabled = true
+
+    // run layout
     rootView.yoga.applyLayout(preservingOrigin: false)
   }
-//
-//    static func getView(instance: Component<Any>) -> UIView? {
-//        return nil
-//    }
+
+  private static func unmountInstance(_ instance: RecoilInstance, _ rootView: UIView) {
+    Reconciler.unmountComponent(instance: instance)
+    rootView.removeAllSubviews()
+    rootView.recoilRoot = nil
+  }
 }

@@ -13,7 +13,7 @@ public func h<P>(_ type: Component<P>.Type, _ props: P) -> Element {
   return .component(ComponentElement(type: type, props: props))
 }
 
-public func h<P>(_ type: HostComponent<P>.Type, _ props: P) -> Element {
+public func h<P, V>(_ type: HostComponent<P, V>.Type, _ props: P) -> Element {
   return .host(HostElement(type: type, props: props))
 }
 
