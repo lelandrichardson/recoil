@@ -11,10 +11,23 @@ import Recoil
 import YogaKit
 
 struct AppProps {
-    
+  let foo: String
 }
 
-class App: Component<AppProps> {
+struct AppState {
+  let count: Int
+}
+
+class App: Component<AppProps, AppState> {
+  override func getInitialState() -> AppState {
+    return AppState(count: 1)
+  }
+  override func componentDidMount() {
+    setState({ (prevState, props) in AppState(count: prevState.count + 1 ) })
+  }
+  override func componentDidUpdate(prevProps: AppProps, prevState: AppState) {
+    setState({ (prevState, props) in AppState(count: prevState.count + 1 ) })
+  }
   override func render() -> Element? {
     /*
     <View style={styles.container}>
@@ -39,7 +52,7 @@ class App: Component<AppProps> {
           .children(h([
             h(Text.self, TextProps()
               .style(Style().color(.white))
-              .text("Hello World really long string that might end up wrapping to two or three lines")
+              .text("Count: \(state.count), foo: \(props.foo)")
             ),
           ]))
         ),

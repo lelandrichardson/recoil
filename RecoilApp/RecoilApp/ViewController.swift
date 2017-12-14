@@ -14,7 +14,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
   
-    let el = h(App.self, AppProps())
+    let el = h(App.self, AppProps(foo: "Foo"))
   
     Recoil.render(el, view)
   }

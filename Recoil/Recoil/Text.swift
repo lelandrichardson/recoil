@@ -30,6 +30,15 @@ final public class Text: HostComponent<TextProps, TextHostView> {
     let view = TextHostView()
     let layout = view.yoga
     layout.isEnabled = true
+    applyProps(view: view, props: props)
+    return view
+  }
+
+  override public func updateComponent(view: TextHostView, prevProps: TextProps) {
+    applyProps(view: view, props: props)
+  }
+
+  private func applyProps(view: TextHostView, props: TextProps) {
     if let style = props.style {
       style.applyTo(label: view)
     }
@@ -37,12 +46,6 @@ final public class Text: HostComponent<TextProps, TextHostView> {
       view.text = text
     }
     view.numberOfLines = props.numberOfLines
-//    container.addSubview(view)
-    return view
-  }
-
-  override public func updateComponent(view: TextHostView, prevProps: TextProps) {
-
   }
 
   override public func renderChildren() -> Element? {

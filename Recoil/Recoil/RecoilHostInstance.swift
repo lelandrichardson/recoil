@@ -76,7 +76,7 @@ class RecoilHostInstance: RecoilInstance {
     let instance = hostElement.type.init(props: hostElement.props)
     self.component = instance
 
-    let view = instance.generalMountComponent()
+    let view = instance.mountComponentInternal()
     self.view = view
 
     self.children = instance.renderChildren()
@@ -105,8 +105,11 @@ class RecoilHostInstance: RecoilInstance {
     }
     currentElement = nextElement
 
+    let prevHostElement = getHostElement(prevElement)
+
     // update props
-    component.updateComponent(view: view, prevProps: hostElement.props)
+    component.setPropsInternal(props: hostElement.props)
+    component.updateComponentInternal(view: view, prevProps: prevHostElement.props)
 
     let prevChildren = children
     children = component.renderChildren()
@@ -150,7 +153,6 @@ class RecoilHostInstance: RecoilInstance {
     var i = 0
 
     return rendered.map({ (key: String, child: RecoilInstance) -> UIView? in
-      var child = child
       child.mountIndex = i
       i += 1
       return Reconciler.mountComponent(instance: child)
@@ -188,12 +190,11 @@ class RecoilHostInstance: RecoilInstance {
 
     // TODO(lmr): ordered iteration is important here
     for (childKey, nextChild) in updatedNextRenderedChildren {
-      var nextChild = nextChild
       let prevChild = prevRenderedChildren[childKey]
 
       // If the are identical, record this as an update. We might have inserted
       // or removed nodes.
-      if var prevChild = prevChild /*, prevChild === nextChild */ {
+      if let prevChild = prevChild /*, prevChild === nextChild */ {
         // We don't actually need to move if moving to a lower index. Other
         // operations will ensure the end result is correct.
         if prevChild.mountIndex < lastIndex {

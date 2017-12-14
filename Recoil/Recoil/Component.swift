@@ -8,25 +8,48 @@
 
 import Foundation
 
-protocol ComponentProtocol {
+protocol ComponentProtocol: class {
   init(props: Any)
-  func setProps(props: Any)
+  weak var instance: RecoilCompositeInstance? { get set }
+  func setPropsInternal(props: Any)
+  func setStateInternal(state: Any)
+  func getStateInternal() -> Any
   func componentWillMount()
   func render() -> Element?
   func componentDidMount()
-  func componentWillUpdate(nextProps: Any)
-  func componentDidUpdate(prevProps: Any)
+  func componentWillUpdate(nextProps: Any, nextState: Any)
+  func componentDidUpdate(prevProps: Any, prevState: Any)
   func componentWillReceiveProps(nextProps: Any)
-  func shouldComponentUpdate(nextProps: Any) -> Bool
+  func shouldComponentUpdate(nextProps: Any, nextState: Any) -> Bool
   func componentWillUnmount()
 }
 
-open class Component<Props>: ComponentProtocol {
-  var props: Props
+open class StatelessComponent<Props>: Component<Props, Void> {
+
+  open override func getInitialState() -> Void {
+    // do nothing... intentionally
+  }
+
+}
+
+open class Component<Props, State>: ComponentProtocol {
+  public var props: Props
+  public var state: State! // This is gross, but otherwise state would be optional everywhere :/
+  weak var instance: RecoilCompositeInstance?
+
 
   // MARK: hacky proxy methods used to work around swift generics issues :(
 
   public required init(props: Any) {
+    if let props = props as? Props {
+      self.props = props
+      self.state = getInitialState()
+    } else {
+      fatalError()
+    }
+  }
+
+  func setPropsInternal(props: Any) {
     if let props = props as? Props {
       self.props = props
     } else {
@@ -34,12 +57,16 @@ open class Component<Props>: ComponentProtocol {
     }
   }
 
-  func setProps(props: Any) {
-    if let props = props as? Props {
-      self.props = props
+  func setStateInternal(state: Any){
+    if let state = state as? State {
+      self.state = state
     } else {
       fatalError()
     }
+  }
+
+  func getStateInternal() -> Any {
+    return state
   }
 
   func componentWillReceiveProps(nextProps: Any) {
@@ -48,26 +75,43 @@ open class Component<Props>: ComponentProtocol {
     }
   }
 
-  func componentWillUpdate(nextProps: Any) {
-    if let nextProps = nextProps as? Props {
-      self.componentWillUpdate(nextProps: nextProps)
+  func componentWillUpdate(nextProps: Any, nextState: Any) {
+    if let nextProps = nextProps as? Props, let nextState = nextState as? State {
+      self.componentWillUpdate(nextProps: nextProps, nextState: nextState)
     }
   }
 
-  func componentDidUpdate(prevProps: Any) {
-    if let prevProps = prevProps as? Props {
-      self.componentDidUpdate(prevProps: prevProps)
+  func componentDidUpdate(prevProps: Any, prevState: Any) {
+    if let prevProps = prevProps as? Props, let prevState = prevState as? State {
+      self.componentDidUpdate(prevProps: prevProps, prevState: prevState)
     }
   }
 
-  func shouldComponentUpdate(nextProps: Any) -> Bool {
-    if let nextProps = nextProps as? Props {
-      return self.shouldComponentUpdate(nextProps: nextProps)
+  func shouldComponentUpdate(nextProps: Any, nextState: Any) -> Bool {
+    if let nextProps = nextProps as? Props, let nextState = nextState as? State {
+      return self.shouldComponentUpdate(nextProps: nextProps, nextState: nextState)
     } else {
       return true
     }
   }
 
+  public func setState(_ updater: (State, Props) -> State) {
+    // This is where React would do queueing, storing a series
+    // of partialStates. The Updater would apply those in a batch later.
+    // This is complicated so we won't do it today. Instead we'll update state
+    // and then tell the reconciler this component needs to be updated, synchronously.
+    guard let instance = instance else {
+      fatalError()
+    }
+
+    instance.pendingState = updater(state, props)
+
+    Reconciler.performUpdateIfNecessary(instance: instance)
+  }
+
+  open func getInitialState() -> State {
+    fatalError("getInitialState() needs to be overridden")
+  }
 
   // MARK: public overridable lifecycle methods
   open func componentWillMount() {
@@ -78,7 +122,7 @@ open class Component<Props>: ComponentProtocol {
 
   }
 
-  open func shouldComponentUpdate(nextProps: Props) -> Bool {
+  open func shouldComponentUpdate(nextProps: Props, nextState: State) -> Bool {
     return true;
   }
 
@@ -86,7 +130,11 @@ open class Component<Props>: ComponentProtocol {
 
   }
 
-  open func componentWillUpdate(nextProps: Props) {
+  open func componentWillUpdate(nextProps: Props, nextState: State) {
+
+  }
+
+  open func componentDidUpdate(prevProps: Props, prevState: State) {
 
   }
 

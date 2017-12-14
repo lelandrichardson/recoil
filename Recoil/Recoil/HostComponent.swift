@@ -10,13 +10,14 @@ import Foundation
 
 protocol HostComponentProtocol {
   init(props: Any)
-  func generalMountComponent() -> UIView
-  func updateComponent(view: UIView, prevProps: Any)
+  func setPropsInternal(props: Any)
+  func mountComponentInternal() -> UIView
+  func updateComponentInternal(view: UIView, prevProps: Any)
   func renderChildren() -> Element?
 }
 
 open class HostComponent<Props, View: UIView>: HostComponentProtocol {
-  let props: Props
+  var props: Props
   
   required public init(props: Any) {
     if let props = props as? Props {
@@ -26,7 +27,13 @@ open class HostComponent<Props, View: UIView>: HostComponentProtocol {
     }
   }
 
-  func generalMountComponent() -> UIView {
+  func setPropsInternal(props: Any) {
+    if let props = props as? Props {
+      self.props = props
+    }
+  }
+
+  func mountComponentInternal() -> UIView {
     return self.mountComponent()
   }
 
@@ -34,7 +41,7 @@ open class HostComponent<Props, View: UIView>: HostComponentProtocol {
     fatalError("mountComponent needs to be overridden")
   }
 
-  func updateComponent(view: UIView, prevProps: Any) {
+  func updateComponentInternal(view: UIView, prevProps: Any) {
     if let prevProps = prevProps as? Props, let view = view as? View {
       self.updateComponent(view: view, prevProps: prevProps)
     }

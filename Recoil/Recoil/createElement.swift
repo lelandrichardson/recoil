@@ -9,7 +9,11 @@
 import Foundation
 
 
-public func h<P>(_ type: Component<P>.Type, _ props: P) -> Element {
+public func h<P, S>(_ type: Component<P, S>.Type, _ props: P) -> Element {
+  return .component(ComponentElement(type: type, props: props))
+}
+
+public func h<P>(_ type: StatelessComponent<P>.Type, _ props: P) -> Element {
   return .component(ComponentElement(type: type, props: props))
 }
 

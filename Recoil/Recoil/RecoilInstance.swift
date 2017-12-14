@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol RecoilInstance {
+protocol RecoilInstance: class {
   var currentElement: Element { get }
   var view: UIView? { get }
   var mountIndex: Int { get set }

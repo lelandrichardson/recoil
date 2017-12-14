@@ -26,6 +26,7 @@ class RecoilCompositeInstance: RecoilInstance {
   var view: UIView?
   var mountIndex: Int = -1
   var componentElement: ComponentElement
+  var pendingState: Any?
   var component: ComponentProtocol?
   var renderedComponent: RecoilInstance?
 
@@ -40,6 +41,7 @@ class RecoilCompositeInstance: RecoilInstance {
     // Arrays or other types, we can safely assume we have an element.
     let component = componentElement.type.init(props: componentElement.props)
     self.component = component
+    component.instance = self
 
     guard let renderedElement = component.render() else {
       self.renderedComponent = nil
@@ -60,6 +62,8 @@ class RecoilCompositeInstance: RecoilInstance {
     // render
     let view = Reconciler.mountComponent(instance: renderedComponent)
     self.view = view
+
+    component.componentDidMount()
 
     // React doesn't store this reference, instead working through a shared
     // interface for storing host nodes, allowing this to work across platforms.
@@ -89,25 +93,24 @@ class RecoilCompositeInstance: RecoilInstance {
 
     // Update instance data
 
-
     let nextComponentElement = getComponentElement(nextElement)
+    let nextState = pendingState ?? component.getStateInternal()
 
     // React would call shouldComponentUpdate here and short circuit.
-    let shouldUpdate = component.shouldComponentUpdate(nextProps: nextComponentElement.props)
+    let shouldUpdate = component.shouldComponentUpdate(nextProps: nextComponentElement.props, nextState: nextState)
 
     if !shouldUpdate {
       return
     }
 
     // React would call componentWillUpdate here
-    component.componentWillUpdate(nextProps: nextComponentElement.props)
+    component.componentWillUpdate(nextProps: nextComponentElement.props, nextState: nextState)
 
     currentElement = nextElement
 
-    component.setProps(props: componentElement.props)
-    // TODO(lmr):
-//    this.state = this._pendingState;
-//    this._pendingState = null;
+    component.setPropsInternal(props: componentElement.props)
+    component.setStateInternal(state: nextState)
+    pendingState = nil
 
     // React has a wrapper instance, which complicates the logic. We'll do
     // something simplified here.
