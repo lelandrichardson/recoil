@@ -44,6 +44,7 @@ final public class Text: HostComponent<TextProps, TextHostView> {
     }
     if let text = props.text {
       view.text = text
+      view.yoga.markDirty()
     }
     view.numberOfLines = props.numberOfLines
   }

@@ -8,33 +8,40 @@
 
 import Foundation
 
+class TraversalContext {
+  init() {}
+  var root: RecoilRoot?
+  var childInstances: [String: RecoilInstance] = [:]
+}
+
 class ChildReconciler {
 
   // This *right here* is why keys are critical to preventing reordering issues.
   // React will reuse an existing instance if there is one in this subtree.
   // The instance identity here is determined by the generated key based on
   // depth in the tree, parent, and (in React) the key={} prop.
-  static func instantiateChild(childInstances: inout [String: RecoilInstance], child: Element, name: String) {
-    if childInstances[name] == nil {
-      childInstances[name] = Reconciler.instantiateComponent(child)
+  static func instantiateChild(context: inout TraversalContext, child: Element, name: String) {
+    if context.childInstances[name] == nil {
+      context.childInstances[name] = Reconciler.instantiateComponent(element: child, root: context.root)
     }
   }
 
-  static func instantiateChildren(children: Element) -> [String: RecoilInstance] {
+  static func instantiateChildren(children: Element, root: RecoilRoot?) -> [String: RecoilInstance] {
     // We store the child instances here, which are in turn used passed to
     // instantiateChild. We'll store this object for reuse when doing updates.
-    var childInstances: [String: RecoilInstance] = [:]
+    var context = TraversalContext()
+    context.root = root
+    let _ = traverseAllChildren(children, &context, instantiateChild)
 
-    let _ = traverseAllChildren(children, &childInstances, instantiateChild)
-
-    return childInstances
+    return context.childInstances
   }
 
   static func updateChildren(
     prevChildren: [String: RecoilInstance], // Instances, as created above
     nextChildren: [String: Element], // Actually elements
     mountImages: inout [UIView?],
-    removedChildren: inout [String: RecoilInstance]) -> [String: RecoilInstance] {
+    removedChildren: inout [String: RecoilInstance],
+    root: RecoilRoot?) -> [String: RecoilInstance] {
     var nextChildrenInstances: [String: RecoilInstance] = [:]
     // Loop over our new children and determine what is being updated, removed,
     // and created.
@@ -61,7 +68,7 @@ class ChildReconciler {
         }
 
         // Instantiate the new child.
-        let nextChild = Reconciler.instantiateComponent(nextElement)
+        let nextChild = Reconciler.instantiateComponent(element: nextElement, root: root)
         nextChildrenInstances[childKey] = nextChild
 
         // React does this here so that refs resolve in the correct order.

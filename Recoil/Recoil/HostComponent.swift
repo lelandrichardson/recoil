@@ -46,6 +46,7 @@ open class HostComponent<Props, View: UIView>: HostComponentProtocol {
       self.updateComponent(view: view, prevProps: prevProps)
     }
   }
+
   open func updateComponent(view: View, prevProps: Props) {
     fatalError("updateComponent needs to be overridden")
   }

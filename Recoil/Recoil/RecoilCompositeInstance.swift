@@ -24,15 +24,17 @@ class RecoilCompositeInstance: RecoilInstance {
     }
   }
   var view: UIView?
+  var root: RecoilRoot?
   var mountIndex: Int = -1
   var componentElement: ComponentElement
   var pendingState: Any?
   var component: ComponentProtocol?
   var renderedComponent: RecoilInstance?
 
-  init(element: Element) {
+  init(element: Element, root: RecoilRoot?) {
     currentElement = element
     componentElement = getComponentElement(element)
+    self.root = root
   }
 
   func mountComponent() -> UIView? {
@@ -43,16 +45,17 @@ class RecoilCompositeInstance: RecoilInstance {
     self.component = component
     component.instance = self
 
+    component.componentWillMount()
+
     guard let renderedElement = component.render() else {
+      component.componentDidMount()
       self.renderedComponent = nil
       self.view = nil
       return nil
     }
 
-    // TODO: lifecycle methods: compnentWillMount
-
     // Actually instantiate the rendered element.
-    let renderedComponent = Reconciler.instantiateComponent(renderedElement)
+    let renderedComponent = Reconciler.instantiateComponent(element: renderedElement, root: root)
 
     self.renderedComponent = renderedComponent
 
@@ -81,20 +84,16 @@ class RecoilCompositeInstance: RecoilInstance {
     guard let component = component else {
       fatalError()
     }
-    // NOTE(lmr): there might be a valid reason for this to be null, but im not sure...
-//    guard let renderedComponent = renderedComponent else {
-//      fatalError()
-//    }
-    // This is a props updates due to a re-render from the parent.
-//    TODO(lmr):
-//    if prevElement !== nextElement {
-      // React would call componentWillReceiveProps here
-//    }
-
     // Update instance data
-
+    let prevComponentElement = componentElement
     let nextComponentElement = getComponentElement(nextElement)
-    let nextState = pendingState ?? component.getStateInternal()
+
+    if prevComponentElement != nextComponentElement {
+      component.componentWillReceiveProps(nextProps: nextComponentElement.props)
+    }
+
+    let prevState = component.getStateInternal()
+    let nextState = pendingState ?? prevState
 
     // React would call shouldComponentUpdate here and short circuit.
     let shouldUpdate = component.shouldComponentUpdate(nextProps: nextComponentElement.props, nextState: nextState)
@@ -125,6 +124,9 @@ class RecoilCompositeInstance: RecoilInstance {
       Reconciler.shouldUpdateComponent(prev: prevRenderedElement, next: nextRenderedElement) {
 
       Reconciler.receiveComponent(instance: renderedComponent, element: nextRenderedElement)
+
+      component.componentDidUpdate(prevProps: prevComponentElement.props, prevState: prevState)
+
     } else {
       // Blow away and start over - it's similar to mounting.
       // We don't actually need this logic for our example but we'll write it.
@@ -141,8 +143,10 @@ class RecoilCompositeInstance: RecoilInstance {
       prevRenderedView?.removeFromSuperview()
 
       if let nextRenderedElement = nextRenderedElement {
-        let nextRenderedComponent = Reconciler.instantiateComponent(nextRenderedElement)
+        let nextRenderedComponent = Reconciler.instantiateComponent(element: nextRenderedElement, root: root)
         let nextView = Reconciler.mountComponent(instance: nextRenderedComponent)
+
+        component.componentDidMount()
 
         if let nextView = nextView {
           parentView.insertSubview(nextView, at: renderedComponent.mountIndex)
@@ -166,10 +170,12 @@ class RecoilCompositeInstance: RecoilInstance {
       return
     }
 
+    // unmount
     component?.componentWillUnmount()
-
     Reconciler.unmountComponent(instance: renderedComponent)
 
+    // clean up references for ARC
+    component?.instance = nil
     view = nil
   }
 }

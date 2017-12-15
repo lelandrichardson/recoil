@@ -16,17 +16,18 @@ import Foundation
  - proper handling of text children...
  - proper handling of composed Text - View -> Text components
  - functional components
- - component state
- - full lifecycle methods
+ - vsync batching for setState
  - potentially throw all this work away and reimplement to mimic Fiber's architecture!
 
  */
 
 
+
+
 public class Recoil {
   public static func render(_ element: Element, _ rootView: UIView) {
 
-    if let instance = rootView.recoilRoot {
+    if let instance = rootView.recoilRoot?.rootInstance {
       // update
       updateInstance(element, rootView, instance)
     } else {
@@ -36,13 +37,11 @@ public class Recoil {
   }
 
   public static func unmount(_ rootView: UIView) {
-    guard let instance = rootView.recoilRoot else {
+    guard let instance = rootView.recoilRoot?.rootInstance else {
       fatalError()
     }
     unmountInstance(instance, rootView)
   }
-
-
 
   // MARK: private
 
@@ -58,7 +57,13 @@ public class Recoil {
 
   private static func mountInstance(_ element: Element, _ rootView: UIView) {
 
-    let instance = Reconciler.instantiateComponent(element)
+    let root = RecoilRoot(rootView: rootView)
+
+    rootView.recoilRoot = root
+
+    let instance = Reconciler.instantiateComponent(element: element, root: root)
+
+    root.rootInstance = instance
 
     let view = Reconciler.mountComponent(instance: instance)
 
@@ -71,13 +76,17 @@ public class Recoil {
     // let yoga do its thing
     rootView.yoga.isEnabled = true
 
-    // run layout
+    // run layout sync
     rootView.yoga.applyLayout(preservingOrigin: false)
   }
 
   private static func unmountInstance(_ instance: RecoilInstance, _ rootView: UIView) {
     Reconciler.unmountComponent(instance: instance)
     rootView.removeAllSubviews()
-    rootView.recoilRoot = nil
+    if let root = rootView.recoilRoot {
+      root.rootInstance = nil
+      root.rootView = nil
+      rootView.recoilRoot = nil
+    }
   }
 }

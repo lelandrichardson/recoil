@@ -147,56 +147,62 @@ final public class Style {
   }
 
   func applyTo(layout: YGLayout) {
-    if let direction = direction { layout.direction = direction }
-    if let flexDirection = flexDirection { layout.flexDirection = flexDirection }
-    if let justifyContent = justifyContent { layout.justifyContent = justifyContent }
-    if let alignContent = alignContent { layout.alignContent = alignContent }
-    if let alignItems = alignItems { layout.alignItems = alignItems }
-    if let alignSelf = alignSelf { layout.alignSelf = alignSelf }
-    if let position = position { layout.position = position }
-    if let flexWrap = flexWrap { layout.flexWrap = flexWrap }
-    if let overflow = overflow { layout.overflow = overflow }
-    if let display = display { layout.display = display }
-    if let flexGrow = flexGrow { layout.flexGrow = flexGrow }
-    if let flexShrink = flexShrink { layout.flexShrink = flexShrink }
-    if let flexBasis = flexBasis { layout.flexBasis = flexBasis }
-    if let left = left { layout.left = left }
-    if let top = top { layout.top = top }
-    if let right = right { layout.right = right }
-    if let bottom = bottom { layout.bottom = bottom }
-    if let start = start { layout.start = start }
-    if let end = end { layout.end = end }
-    if let marginLeft = marginLeft { layout.marginLeft = marginLeft }
-    if let marginTop = marginTop { layout.marginTop = marginTop }
-    if let marginRight = marginRight { layout.marginRight = marginRight }
-    if let marginBottom = marginBottom { layout.marginBottom = marginBottom }
-    if let marginStart = marginStart { layout.marginStart = marginStart }
-    if let marginEnd = marginEnd { layout.marginEnd = marginEnd }
-    if let marginHorizontal = marginHorizontal { layout.marginHorizontal = marginHorizontal }
-    if let marginVertical = marginVertical { layout.marginVertical = marginVertical }
-    if let margin = margin { layout.margin = margin }
-    if let paddingLeft = paddingLeft { layout.paddingLeft = paddingLeft }
-    if let paddingTop = paddingTop { layout.paddingTop = paddingTop }
-    if let paddingRight = paddingRight { layout.paddingRight = paddingRight }
-    if let paddingBottom = paddingBottom { layout.paddingBottom = paddingBottom }
-    if let paddingStart = paddingStart { layout.paddingStart = paddingStart }
-    if let paddingEnd = paddingEnd { layout.paddingEnd = paddingEnd }
-    if let paddingHorizontal = paddingHorizontal { layout.paddingHorizontal = paddingHorizontal }
-    if let paddingVertical = paddingVertical { layout.paddingVertical = paddingVertical }
-    if let padding = padding { layout.padding = padding }
-    if let borderLeftWidth = borderLeftWidth { layout.borderLeftWidth = borderLeftWidth }
-    if let borderTopWidth = borderTopWidth { layout.borderTopWidth = borderTopWidth }
-    if let borderRightWidth = borderRightWidth { layout.borderRightWidth = borderRightWidth }
-    if let borderBottomWidth = borderBottomWidth { layout.borderBottomWidth = borderBottomWidth }
-    if let borderStartWidth = borderStartWidth { layout.borderStartWidth = borderStartWidth }
-    if let borderEndWidth = borderEndWidth { layout.borderEndWidth = borderEndWidth }
-    if let borderWidth = borderWidth { layout.borderWidth = borderWidth }
-    if let width = width { layout.width = width }
-    if let height = height { layout.height = height }
-    if let minWidth = minWidth { layout.minWidth = minWidth }
-    if let minHeight = minHeight { layout.minHeight = minHeight }
-    if let maxWidth = maxWidth { layout.maxWidth = maxWidth }
-    if let maxHeight = maxHeight { layout.maxHeight = maxHeight }
+    var dirty = false
+
+    if let direction = direction, direction != layout.direction { layout.direction = direction; dirty = true }
+    if let flexDirection = flexDirection, flexDirection != layout.flexDirection { layout.flexDirection = flexDirection; dirty = true }
+    if let justifyContent = justifyContent, justifyContent != layout.justifyContent { layout.justifyContent = justifyContent; dirty = true }
+    if let alignContent = alignContent, alignContent != layout.alignContent { layout.alignContent = alignContent; dirty = true }
+    if let alignItems = alignItems, alignItems != layout.alignItems { layout.alignItems = alignItems; dirty = true }
+    if let alignSelf = alignSelf, alignSelf != layout.alignSelf { layout.alignSelf = alignSelf; dirty = true }
+    if let position = position, position != layout.position { layout.position = position; dirty = true }
+    if let flexWrap = flexWrap, flexWrap != layout.flexWrap { layout.flexWrap = flexWrap; dirty = true }
+    if let overflow = overflow, overflow != layout.overflow { layout.overflow = overflow; dirty = true }
+    if let display = display, display != layout.display { layout.display = display; dirty = true }
+    if let flexGrow = flexGrow, flexGrow != layout.flexGrow { layout.flexGrow = flexGrow; dirty = true }
+    if let flexShrink = flexShrink, flexShrink != layout.flexShrink { layout.flexShrink = flexShrink; dirty = true }
+    if let flexBasis = flexBasis, flexBasis != layout.flexBasis { layout.flexBasis = flexBasis; dirty = true }
+    if let left = left, left != layout.left { layout.left = left; dirty = true }
+    if let top = top, top != layout.top { layout.top = top; dirty = true }
+    if let right = right, right != layout.right { layout.right = right; dirty = true }
+    if let bottom = bottom, bottom != layout.bottom { layout.bottom = bottom; dirty = true }
+    if let start = start, start != layout.start { layout.start = start; dirty = true }
+    if let end = end, end != layout.end { layout.end = end; dirty = true }
+    if let marginLeft = marginLeft, marginLeft != layout.marginLeft { layout.marginLeft = marginLeft; dirty = true }
+    if let marginTop = marginTop, marginTop != layout.marginTop { layout.marginTop = marginTop; dirty = true }
+    if let marginRight = marginRight, marginRight != layout.marginRight { layout.marginRight = marginRight; dirty = true }
+    if let marginBottom = marginBottom, marginBottom != layout.marginBottom { layout.marginBottom = marginBottom; dirty = true }
+    if let marginStart = marginStart, marginStart != layout.marginStart { layout.marginStart = marginStart; dirty = true }
+    if let marginEnd = marginEnd, marginEnd != layout.marginEnd { layout.marginEnd = marginEnd; dirty = true }
+    if let marginHorizontal = marginHorizontal, marginHorizontal != layout.marginHorizontal { layout.marginHorizontal = marginHorizontal; dirty = true }
+    if let marginVertical = marginVertical, marginVertical != layout.marginVertical { layout.marginVertical = marginVertical; dirty = true }
+    if let margin = margin, margin != layout.margin { layout.margin = margin; dirty = true }
+    if let paddingLeft = paddingLeft, paddingLeft != layout.paddingLeft { layout.paddingLeft = paddingLeft; dirty = true }
+    if let paddingTop = paddingTop, paddingTop != layout.paddingTop { layout.paddingTop = paddingTop; dirty = true }
+    if let paddingRight = paddingRight, paddingRight != layout.paddingRight { layout.paddingRight = paddingRight; dirty = true }
+    if let paddingBottom = paddingBottom, paddingBottom != layout.paddingBottom { layout.paddingBottom = paddingBottom; dirty = true }
+    if let paddingStart = paddingStart, paddingStart != layout.paddingStart { layout.paddingStart = paddingStart; dirty = true }
+    if let paddingEnd = paddingEnd, paddingEnd != layout.paddingEnd { layout.paddingEnd = paddingEnd; dirty = true }
+    if let paddingHorizontal = paddingHorizontal, paddingHorizontal != layout.paddingHorizontal { layout.paddingHorizontal = paddingHorizontal; dirty = true }
+    if let paddingVertical = paddingVertical, paddingVertical != layout.paddingVertical { layout.paddingVertical = paddingVertical; dirty = true }
+    if let padding = padding, padding != layout.padding { layout.padding = padding; dirty = true }
+    if let borderLeftWidth = borderLeftWidth, borderLeftWidth != layout.borderLeftWidth { layout.borderLeftWidth = borderLeftWidth; dirty = true }
+    if let borderTopWidth = borderTopWidth, borderTopWidth != layout.borderTopWidth { layout.borderTopWidth = borderTopWidth; dirty = true }
+    if let borderRightWidth = borderRightWidth, borderRightWidth != layout.borderRightWidth { layout.borderRightWidth = borderRightWidth; dirty = true }
+    if let borderBottomWidth = borderBottomWidth, borderBottomWidth != layout.borderBottomWidth { layout.borderBottomWidth = borderBottomWidth; dirty = true }
+    if let borderStartWidth = borderStartWidth, borderStartWidth != layout.borderStartWidth { layout.borderStartWidth = borderStartWidth; dirty = true }
+    if let borderEndWidth = borderEndWidth, borderEndWidth != layout.borderEndWidth { layout.borderEndWidth = borderEndWidth; dirty = true }
+    if let borderWidth = borderWidth, borderWidth != layout.borderWidth { layout.borderWidth = borderWidth; dirty = true }
+    if let width = width, width != layout.width { layout.width = width; dirty = true }
+    if let height = height, height != layout.height { layout.height = height; dirty = true }
+    if let minWidth = minWidth, minWidth != layout.minWidth { layout.minWidth = minWidth; dirty = true }
+    if let minHeight = minHeight, minHeight != layout.minHeight { layout.minHeight = minHeight; dirty = true }
+    if let maxWidth = maxWidth, maxWidth != layout.maxWidth { layout.maxWidth = maxWidth; dirty = true }
+    if let maxHeight = maxHeight, maxHeight != layout.maxHeight { layout.maxHeight = maxHeight; dirty = true }
+
+    if dirty {
+      layout.markDirty()
+    }
   }
 
   public static func + (left: Style, right: Style) -> Style {

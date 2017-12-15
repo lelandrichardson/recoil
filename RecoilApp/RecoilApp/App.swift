@@ -23,10 +23,16 @@ class App: Component<AppProps, AppState> {
     return AppState(count: 1)
   }
   override func componentDidMount() {
-    setState({ (prevState, props) in AppState(count: prevState.count + 1 ) })
+    setState { state in
+      return AppState(count: state.count + 1 )
+    }
   }
   override func componentDidUpdate(prevProps: AppProps, prevState: AppState) {
-    setState({ (prevState, props) in AppState(count: prevState.count + 1 ) })
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.setState { state in
+        return AppState(count: state.count + 1 )
+      }
+    }
   }
   override func render() -> Element? {
     /*
@@ -42,19 +48,19 @@ class App: Component<AppProps, AppState> {
       .style(styles.container + styles.green)
       .children(h([
         h(View.self, ViewProps()
-            .style(styles.child + styles.red)
-        ),
-        h(View.self, ViewProps()
-          .style(styles.child + styles.blue)
-        ),
-        h(View.self, ViewProps()
           .style(styles.purple)
           .children(h([
             h(Text.self, TextProps()
               .style(Style().color(.white))
               .text("Count: \(state.count), foo: \(props.foo)")
             ),
-          ]))
+            ]))
+        ),
+        h(View.self, ViewProps()
+            .style(styles.child + styles.red)
+        ),
+        h(View.self, ViewProps()
+          .style(styles.child + styles.blue + Style().width(state.count % 10 == 0 ? 60 : 80))
         ),
       ]))
     )

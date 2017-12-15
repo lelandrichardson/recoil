@@ -10,10 +10,10 @@ import Foundation
 
 
 class Reconciler {
-  static func instantiateComponent(_ element: Element) -> RecoilInstance {
+  static func instantiateComponent(element: Element, root: RecoilRoot?) -> RecoilInstance {
     switch element {
-    case .host(_): return RecoilHostInstance(element: element)
-    case .component(_): return RecoilCompositeInstance(element: element)
+    case .host(_): return RecoilHostInstance(element: element, root: root)
+    case .component(_): return RecoilCompositeInstance(element: element, root: root)
     default: fatalError()
     }
   }

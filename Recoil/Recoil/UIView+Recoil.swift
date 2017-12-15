@@ -11,13 +11,25 @@ import Foundation
 var kRecoilRoot = "recoilRoot"
 
 extension UIView {
-  var recoilRoot: RecoilInstance? {
+  var recoilRoot: RecoilRoot? {
     get {
-      return objc_getAssociatedObject( self, &kRecoilRoot ) as? RecoilInstance
+      return objc_getAssociatedObject( self, &kRecoilRoot ) as? RecoilRoot
     }
     set {
       objc_setAssociatedObject( self, &kRecoilRoot, newValue, .OBJC_ASSOCIATION_RETAIN)
     }
+  }
+
+  func isRecoilRoot() -> Bool {
+    return recoilRoot != nil
+  }
+
+  func getRecoilRootFromAncestors() -> RecoilRoot? {
+    var node: UIView? = self
+    while (node != nil && node?.recoilRoot == nil) {
+      node = node?.superview
+    }
+    return node?.recoilRoot
   }
 
   func removeAllSubviews() {

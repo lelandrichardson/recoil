@@ -11,7 +11,7 @@ import Foundation
 let SEPARATOR = "."
 let SUBSEPARATOR = ":"
 
-typealias TraversalCallback<T> = (inout [String: T], Element, String) -> Void
+typealias TraversalCallback<T> = (inout T, Element, String) -> Void
 
 private func getKey(el: Element?, index: Int) -> String {
   // This is where we would use the key prop to generate a unique id that
@@ -24,7 +24,7 @@ private func getKey(el: Element?, index: Int) -> String {
 private func traverseAllChildrenImpl<T>(
   _ children: Element?,
   _ nameSoFar: String,
-  _ traverseContext: inout [String: T],
+  _ traverseContext: inout T,
   _ callback: @escaping TraversalCallback<T>
 ) -> Int {
   // TODO: support booleans
@@ -73,7 +73,7 @@ private func traverseAllChildrenImpl<T>(
 
 func traverseAllChildren<T>(
   _ children: Element?,
-  _ traverseContext: inout [String: T],
+  _ traverseContext: inout T,
   _ callback: @escaping TraversalCallback<T>
 ) -> Int {
   return traverseAllChildrenImpl(children, "", &traverseContext, callback)

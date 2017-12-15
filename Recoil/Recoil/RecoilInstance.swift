@@ -10,6 +10,7 @@ import Foundation
 
 protocol RecoilInstance: class {
   var currentElement: Element { get }
+  var root: RecoilRoot? { get }
   var view: UIView? { get }
   var mountIndex: Int { get set }
   func mountComponent() -> UIView?
@@ -17,4 +18,13 @@ protocol RecoilInstance: class {
   func updateComponent(from prevElement: Element, to nextElement: Element)
   func performUpdateIfNecessary()
   func unmountComponent()
+//  func enqueueLayout()
+}
+
+extension RecoilInstance {
+//  func enqueueLayout() {
+//    if let root = self.view?.getRecoilRootFromAncestors() {
+//      root.isDirty = true
+//    }
+//  }
 }

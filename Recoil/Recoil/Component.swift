@@ -10,7 +10,7 @@ import Foundation
 
 protocol ComponentProtocol: class {
   init(props: Any)
-  weak var instance: RecoilCompositeInstance? { get set }
+  var instance: RecoilCompositeInstance? { get set }
   func setPropsInternal(props: Any)
   func setStateInternal(state: Any)
   func getStateInternal() -> Any
@@ -25,17 +25,18 @@ protocol ComponentProtocol: class {
 }
 
 open class StatelessComponent<Props>: Component<Props, Void> {
-
   open override func getInitialState() -> Void {
     // do nothing... intentionally
   }
-
 }
 
 open class Component<Props, State>: ComponentProtocol {
   public var props: Props
   public var state: State! // This is gross, but otherwise state would be optional everywhere :/
-  weak var instance: RecoilCompositeInstance?
+
+  // this should probably be weak, but it seems to break when i try that. Instead, we will jut be good about nulling out
+  // this reference in unmountComponent...
+  var instance: RecoilCompositeInstance?
 
 
   // MARK: hacky proxy methods used to work around swift generics issues :(
@@ -95,7 +96,11 @@ open class Component<Props, State>: ComponentProtocol {
     }
   }
 
-  public func setState(_ updater: (State, Props) -> State) {
+  public func setState(_ updater: @escaping (State) -> State) {
+    setState({ (prevState, _) in updater(prevState) })
+  }
+
+  public func setState(_ updater: @escaping (State, Props) -> State) {
     // This is where React would do queueing, storing a series
     // of partialStates. The Updater would apply those in a batch later.
     // This is complicated so we won't do it today. Instead we'll update state
@@ -104,7 +109,11 @@ open class Component<Props, State>: ComponentProtocol {
       fatalError()
     }
 
-    instance.pendingState = updater(state, props)
+    if let pendingState = instance.pendingState, let prevState = pendingState as? State {
+      instance.pendingState = updater(prevState, props)
+    } else {
+      instance.pendingState = updater(state, props)
+    }
 
     Reconciler.performUpdateIfNecessary(instance: instance)
   }
@@ -123,7 +132,7 @@ open class Component<Props, State>: ComponentProtocol {
   }
 
   open func shouldComponentUpdate(nextProps: Props, nextState: State) -> Bool {
-    return true;
+    return true
   }
 
   open func componentWillReceiveProps(nextProps: Props) {

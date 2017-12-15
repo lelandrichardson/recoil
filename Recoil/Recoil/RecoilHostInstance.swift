@@ -62,13 +62,15 @@ class RecoilHostInstance: RecoilInstance {
   var mountIndex: Int = -1
   var hostElement: HostElement
   var view: UIView?
+  var root: RecoilRoot?
   var component: HostComponentProtocol?
   var children: Element?
   var renderedChildren: [String: RecoilInstance]?
 
-  init(element: Element) {
+  init(element: Element, root: RecoilRoot?) {
     currentElement = element
     hostElement = getHostElement(element)
+    self.root = root
   }
 
   func mountComponent() -> UIView? {
@@ -90,6 +92,8 @@ class RecoilHostInstance: RecoilInstance {
         }
       }
     }
+
+    root?.enqueueLayout()
 
     return view
   }
@@ -118,6 +122,7 @@ class RecoilHostInstance: RecoilInstance {
     if prevChildren != nil || children != nil {
       updateChildren(nextChildren: children)
     }
+    root?.enqueueLayout()
   }
 
   func performUpdateIfNecessary() {
@@ -129,6 +134,8 @@ class RecoilHostInstance: RecoilInstance {
     // removing event handlers that had to be attached to this node and couldn't
     // be handled through propagation.
     unmountChildren()
+
+    root?.enqueueLayout()
   }
 
   func unmountChildren() {
@@ -138,7 +145,7 @@ class RecoilHostInstance: RecoilInstance {
   func mountChildren(children: Element) -> [UIView?] {
     // Instantiate all of the actual child instances into a flat object. This
     // handles all of the complicated logic around flattening subarrays.
-    let rendered = ChildReconciler.instantiateChildren(children: children)
+    let rendered = ChildReconciler.instantiateChildren(children: children, root: root)
     self.renderedChildren = rendered
 
     /*
@@ -171,7 +178,8 @@ class RecoilHostInstance: RecoilInstance {
       prevChildren: prevRenderedChildren,
       nextChildren: nextRenderedChildren,
       mountImages: &mountImages,
-      removedChildren: &removedNodes
+      removedChildren: &removedNodes,
+      root: root
     )
 
     // The following is the bread & butter of React. We'll compare the current
