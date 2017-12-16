@@ -28,6 +28,11 @@ private func getKey(el: Element?, index: Int) -> String {
         return key.recoilKeyValue()
       }
       break
+    case let .function(functionElement):
+      if let key = functionElement.key {
+        return key.recoilKeyValue()
+      }
+      break
     default:
       break
     }
@@ -50,6 +55,7 @@ private func traverseAllChildrenImpl<T>(
   case
     .host(_),
     .component(_),
+    .function(_),
     .int(_),
     .string(_),
     .double(_):

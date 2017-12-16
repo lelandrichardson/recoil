@@ -85,7 +85,7 @@ class App: Component<AppProps, AppState> {
   }
 }
 
-struct Styles {
+private struct Styles {
   let container = Style()
     .padding(20)
     .flexDirection(.row)
@@ -99,4 +99,4 @@ struct Styles {
   let purple = Style().backgroundColor(.uiColor(UIColor.purple))
 }
 
-let styles = Styles()
+private let styles = Styles()

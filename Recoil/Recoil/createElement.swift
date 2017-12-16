@@ -32,11 +32,27 @@ public func h<P, V>(_ type: HostComponent<P, V>.Type, key: Key, _ props: P) -> E
   return .host(HostElement(type: type, props: props, key: key))
 }
 
-//public typealias SFC<P> = (P) -> Element?
-//
-//public func h<P>(_ type: SFC<P>, _ props: P) -> Element {
-//  return .string("")
-//}
+public typealias SFC<P> = (P) -> Element?
+
+public func h<P>(_ type: @escaping SFC<P>, _ props: P) -> Element {
+  let newType: (Any) -> Element? = { props in
+    guard let props = props as? P else {
+      fatalError()
+    }
+    return type(props)
+  }
+  return .function(FunctionalElement(type: newType, realType: type, props: props, key: nil))
+}
+
+public func h<P>(_ type: @escaping SFC<P>, key: Key, _ props: P) -> Element {
+  let newType: (Any) -> Element? = { props in
+    guard let props = props as? P else {
+      fatalError()
+    }
+    return type(props)
+  }
+  return .function(FunctionalElement(type: newType, realType: type, props: props, key: key))
+}
 
 public func h(_ string: String) -> Element {
   return .string(string)

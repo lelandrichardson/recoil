@@ -10,6 +10,7 @@ import Foundation
 import YogaKit
 
 public enum Color {
+  // TODO: hsl, rgba, hex
   case rgb(CGFloat, CGFloat, CGFloat)
   case raw(String)
   case uiColor(UIColor)
@@ -52,6 +53,9 @@ final public class Style {
   // Non-Yoga properties
   var backgroundColor: Color?
   var opacity: CGFloat?
+  // TODO: transforms
+  // TODO: border colors
+  // TODO: border radii
 
   // Yoga Properties
   var direction: YGDirection?

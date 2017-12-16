@@ -14,6 +14,7 @@ class Reconciler {
     switch element {
     case .host(_): return RecoilHostInstance(element: element, root: root)
     case .component(_): return RecoilCompositeInstance(element: element, root: root)
+    case .function(_): return RecoilFunctionalInstance(element: element, root: root)
     default: fatalError()
     }
   }
@@ -57,6 +58,8 @@ class Reconciler {
       return a.type == b.type
     case let (.component(a), .component(b)):
       return a.type == b.type
+    case (.function(_), .function(_)):
+      return false // TODO???
     default:
       return false
     }

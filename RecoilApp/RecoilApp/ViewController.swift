@@ -15,8 +15,9 @@ class ViewController: UIViewController {
     super.viewDidLoad()
   
     let el = h(App.self, AppProps(foo: "Foo"))
+    let el2 = h(FunctionalComponent, (foo: "Hello", bar: 123))
   
-    Recoil.render(el, view)
+    Recoil.render(el2, view)
   }
 
   override func didReceiveMemoryWarning() {

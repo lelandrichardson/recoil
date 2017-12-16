@@ -25,6 +25,7 @@ extension Int: Key {
 public enum Element {
   case host(HostElement)
   case component(ComponentElement)
+  case function(FunctionalElement)
   case array(Array<Element?>)
   case string(String)
   case double(Double)
@@ -33,6 +34,13 @@ public enum Element {
 
 public struct ComponentElement {
   let type: ComponentProtocol.Type
+  let props: Any
+  let key: Key?
+}
+
+public struct FunctionalElement {
+  let type: (Any) -> Element?
+  let realType: Any
   let props: Any
   let key: Key?
 }
@@ -72,11 +80,20 @@ public func ==(lhs: HostElement, rhs: HostElement) -> Bool {
   return false
 }
 
+public func ==(lhs: FunctionalElement, rhs: FunctionalElement) -> Bool {
+  // TODO: How should we implement this? :(
+  return false
+}
+
 public func !=(lhs: HostElement, rhs: HostElement) -> Bool {
   return !(lhs == rhs)
 }
 
 public func !=(lhs: ComponentElement, rhs: ComponentElement) -> Bool {
+  return !(lhs == rhs)
+}
+
+public func !=(lhs: FunctionalElement, rhs: FunctionalElement) -> Bool {
   return !(lhs == rhs)
 }
 

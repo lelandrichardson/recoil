@@ -23,6 +23,7 @@
 		8432F5721FE4823800C67334 /* RecoilRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5711FE4823800C67334 /* RecoilRoot.swift */; };
 		8432F5761FE4939F00C67334 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5751FE4939F00C67334 /* Image.swift */; };
 		8432F5781FE4941300C67334 /* ImageHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5771FE4941300C67334 /* ImageHostView.swift */; };
+		8432F57A1FE4E76A00C67334 /* RecoilFunctionalInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5791FE4E76A00C67334 /* RecoilFunctionalInstance.swift */; };
 		844910971FE093F00026A2DB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844910961FE093F00026A2DB /* Style.swift */; };
 		8497B9B71FE033B300D29705 /* Recoil.h in Headers */ = {isa = PBXBuildFile; fileRef = 8497B9B51FE033B300D29705 /* Recoil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8497B9C41FE04B7500D29705 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497B9C31FE04B7500D29705 /* Component.swift */; };
@@ -51,6 +52,7 @@
 		8432F5711FE4823800C67334 /* RecoilRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoilRoot.swift; sourceTree = "<group>"; };
 		8432F5751FE4939F00C67334 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		8432F5771FE4941300C67334 /* ImageHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHostView.swift; sourceTree = "<group>"; };
+		8432F5791FE4E76A00C67334 /* RecoilFunctionalInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoilFunctionalInstance.swift; sourceTree = "<group>"; };
 		844910961FE093F00026A2DB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		8497B9B21FE033B300D29705 /* Recoil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Recoil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8497B9B51FE033B300D29705 /* Recoil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Recoil.h; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				8432F5631FE2270400C67334 /* RecoilInstance.swift */,
 				8432F5671FE23E8E00C67334 /* RecoilHostInstance.swift */,
 				8432F5691FE23E9700C67334 /* RecoilCompositeInstance.swift */,
+				8432F5791FE4E76A00C67334 /* RecoilFunctionalInstance.swift */,
 				8432F5651FE22D0700C67334 /* ChildReconciler.swift */,
 				8432F56B1FE2B76C00C67334 /* Traverse.swift */,
 				8497B9CA1FE06B0900D29705 /* Element.swift */,
@@ -270,6 +273,7 @@
 				8432F5601FE2203F00C67334 /* UIView+Recoil.swift in Sources */,
 				8432F55A1FE1D2AB00C67334 /* ViewHostView.swift in Sources */,
 				8497B9C41FE04B7500D29705 /* Component.swift in Sources */,
+				8432F57A1FE4E76A00C67334 /* RecoilFunctionalInstance.swift in Sources */,
 				8432F56E1FE46C2400C67334 /* YGValue+Recoil.swift in Sources */,
 				8497B9D11FE0892700D29705 /* View.swift in Sources */,
 				8432F5721FE4823800C67334 /* RecoilRoot.swift in Sources */,

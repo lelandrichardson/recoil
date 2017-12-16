@@ -18,10 +18,14 @@ import Foundation
  - vsync batching for setState
  - potentially throw all this work away and reimplement to mimic Fiber's architecture!
  - Animated API?
- - Image host component
  - scrollview host component
  - touchable host component
  - textinput host component
+ - better color handling
+ - view transforms
+ - view border and stuff
+ - better text font styling
+
 
  */
 
