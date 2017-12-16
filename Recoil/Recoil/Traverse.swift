@@ -17,7 +17,21 @@ private func getKey(el: Element?, index: Int) -> String {
   // This is where we would use the key prop to generate a unique id that
   // persists across moves. However we're skipping that so we'll just use the
   // index.
-
+  if let el = el {
+    switch el {
+    case let .host(hostElement):
+      if let key = hostElement.key {
+        return key.recoilKeyValue()
+      }
+    case let .component(componentElement):
+      if let key = componentElement.key {
+        return key.recoilKeyValue()
+      }
+      break
+    default:
+      break
+    }
+  }
   return "\(index)"
 }
 

@@ -21,6 +21,8 @@
 		8432F56C1FE2B76C00C67334 /* Traverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F56B1FE2B76C00C67334 /* Traverse.swift */; };
 		8432F56E1FE46C2400C67334 /* YGValue+Recoil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F56D1FE46C2400C67334 /* YGValue+Recoil.swift */; };
 		8432F5721FE4823800C67334 /* RecoilRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5711FE4823800C67334 /* RecoilRoot.swift */; };
+		8432F5761FE4939F00C67334 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5751FE4939F00C67334 /* Image.swift */; };
+		8432F5781FE4941300C67334 /* ImageHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5771FE4941300C67334 /* ImageHostView.swift */; };
 		844910971FE093F00026A2DB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844910961FE093F00026A2DB /* Style.swift */; };
 		8497B9B71FE033B300D29705 /* Recoil.h in Headers */ = {isa = PBXBuildFile; fileRef = 8497B9B51FE033B300D29705 /* Recoil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8497B9C41FE04B7500D29705 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497B9C31FE04B7500D29705 /* Component.swift */; };
@@ -47,6 +49,8 @@
 		8432F56B1FE2B76C00C67334 /* Traverse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Traverse.swift; sourceTree = "<group>"; };
 		8432F56D1FE46C2400C67334 /* YGValue+Recoil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YGValue+Recoil.swift"; sourceTree = "<group>"; };
 		8432F5711FE4823800C67334 /* RecoilRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoilRoot.swift; sourceTree = "<group>"; };
+		8432F5751FE4939F00C67334 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		8432F5771FE4941300C67334 /* ImageHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHostView.swift; sourceTree = "<group>"; };
 		844910961FE093F00026A2DB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		8497B9B21FE033B300D29705 /* Recoil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Recoil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8497B9B51FE033B300D29705 /* Recoil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Recoil.h; sourceTree = "<group>"; };
@@ -125,8 +129,10 @@
 				8432F55F1FE2203F00C67334 /* UIView+Recoil.swift */,
 				8432F56D1FE46C2400C67334 /* YGValue+Recoil.swift */,
 				8497B9D01FE0892700D29705 /* View.swift */,
+				8432F5751FE4939F00C67334 /* Image.swift */,
 				8432F55B1FE1DA6F00C67334 /* Text.swift */,
 				8432F55D1FE1DA7B00C67334 /* TextHostView.swift */,
+				8432F5771FE4941300C67334 /* ImageHostView.swift */,
 				8432F5591FE1D2AB00C67334 /* ViewHostView.swift */,
 			);
 			path = Recoil;
@@ -268,6 +274,8 @@
 				8497B9D11FE0892700D29705 /* View.swift in Sources */,
 				8432F5721FE4823800C67334 /* RecoilRoot.swift in Sources */,
 				8432F55C1FE1DA6F00C67334 /* Text.swift in Sources */,
+				8432F5761FE4939F00C67334 /* Image.swift in Sources */,
+				8432F5781FE4941300C67334 /* ImageHostView.swift in Sources */,
 				8432F5661FE22D0800C67334 /* ChildReconciler.swift in Sources */,
 				8432F5641FE2270400C67334 /* RecoilInstance.swift in Sources */,
 				8432F5681FE23E8E00C67334 /* RecoilHostInstance.swift in Sources */,

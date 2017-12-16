@@ -30,10 +30,10 @@ class Reconciler {
     // current one. This is unlikely in normal JSX usage, but it an optimization
     // that can be unlocked with Babel's inline-element transform.
 
-//    let prevElement = instance.currentElement;
-//    if (prevElement === element) {
-//      return;
-//    }
+    let prevElement = instance.currentElement;
+    if (prevElement == element) {
+      return;
+    }
 
     // Defer to the instance.
     instance.receiveComponent(element: element)

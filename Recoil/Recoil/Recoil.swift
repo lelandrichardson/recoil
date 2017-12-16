@@ -11,13 +11,17 @@ import Foundation
 /*
  BIG TODOS:
 
- - element keys
  - refs
  - proper handling of text children...
  - proper handling of composed Text - View -> Text components
  - functional components
  - vsync batching for setState
  - potentially throw all this work away and reimplement to mimic Fiber's architecture!
+ - Animated API?
+ - Image host component
+ - scrollview host component
+ - touchable host component
+ - textinput host component
 
  */
 
@@ -47,7 +51,7 @@ public class Recoil {
 
   private static func updateInstance(_ element: Element, _ rootView: UIView, _ instance: RecoilInstance) {
     if (Reconciler.shouldUpdateComponent(prev: instance.currentElement, next: element)) {
-      // TODO(lmr): do the update
+      instance.updateComponent(from: instance.currentElement, to: element)
     } else {
       // Unmount and then mount the new one
       unmountInstance(instance, rootView)

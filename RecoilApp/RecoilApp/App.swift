@@ -23,17 +23,24 @@ class App: Component<AppProps, AppState> {
     return AppState(count: 1)
   }
   override func componentDidMount() {
+//    setState { state in
+//      return AppState(count: state.count + 1 )
+//    }
+  }
+  override func componentDidUpdate(prevProps: AppProps, prevState: AppState) {
+//    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//      self.setState { state in
+//        return AppState(count: state.count + 1 )
+//      }
+//    }
+  }
+
+  func increment() {
     setState { state in
       return AppState(count: state.count + 1 )
     }
   }
-  override func componentDidUpdate(prevProps: AppProps, prevState: AppState) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      self.setState { state in
-        return AppState(count: state.count + 1 )
-      }
-    }
-  }
+
   override func render() -> Element? {
     /*
     <View style={styles.container}>
@@ -44,25 +51,36 @@ class App: Component<AppProps, AppState> {
       </View>
     </View>
     */
-    return h(View.self, ViewProps()
-      .style(styles.container + styles.green)
+
+    var children = [
+      h(Image.self, key: 0, ImageProps()
+        .style(styles.child + styles.red)
+        .source("https://unsplash.it/80/80?image=123")
+      ),
+      h(View.self, key: 1, ViewProps()
+        .style(styles.child + styles.blue + Style().width(state.count % 10 == 0 ? 60 : 80))
+      ),
+    ]
+
+    children.insert(
+      h(View.self, key: 2, ViewProps()
+      .style(styles.purple)
+      .onPress({ [weak self] in
+        self?.setState { state in
+          return AppState(count: state.count + 1 )
+        }
+      })
       .children(h([
-        h(View.self, ViewProps()
-          .style(styles.purple)
-          .children(h([
-            h(Text.self, TextProps()
-              .style(Style().color(.white))
-              .text("Count: \(state.count), foo: \(props.foo)")
-            ),
-            ]))
-        ),
-        h(View.self, ViewProps()
-            .style(styles.child + styles.red)
-        ),
-        h(View.self, ViewProps()
-          .style(styles.child + styles.blue + Style().width(state.count % 10 == 0 ? 60 : 80))
+        h(Text.self, TextProps()
+          .style(Style().color(.white))
+          .text("Count: \(state.count), Click me!")
         ),
       ]))
+    ), at: state.count % 5 == 0 ? 0 : 1)
+
+    return h(View.self, ViewProps()
+      .style(styles.container + styles.green)
+      .children(h(children))
     )
   }
 }

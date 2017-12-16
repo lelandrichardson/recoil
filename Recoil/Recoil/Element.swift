@@ -8,7 +8,19 @@
 
 import Foundation
 
-public typealias Key = AnyHashable
+public protocol Key {
+  func recoilKeyValue() -> String
+}
+
+extension String: Key {
+  public func recoilKeyValue() -> String { return self }
+}
+
+extension Int: Key {
+  public func recoilKeyValue() -> String { return "\(self)" }
+}
+
+
 
 public enum Element {
   case host(HostElement)
@@ -28,7 +40,7 @@ public struct ComponentElement {
 public struct HostElement {
   let type: HostComponentProtocol.Type
   let props: Any
-  let key: Key?
+  internal let key: Key?
 }
 
 public func ==(lhs: Element, rhs: Element) -> Bool {

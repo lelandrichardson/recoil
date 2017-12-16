@@ -18,13 +18,5 @@ protocol RecoilInstance: class {
   func updateComponent(from prevElement: Element, to nextElement: Element)
   func performUpdateIfNecessary()
   func unmountComponent()
-//  func enqueueLayout()
 }
 
-extension RecoilInstance {
-//  func enqueueLayout() {
-//    if let root = self.view?.getRecoilRootFromAncestors() {
-//      root.isDirty = true
-//    }
-//  }
-}
