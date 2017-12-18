@@ -13,6 +13,8 @@ protocol HostComponentProtocol {
   func setPropsInternal(props: Any)
   func mountComponentInternal() -> UIView
   func updateComponentInternal(view: UIView, prevProps: Any)
+  func childrenDidMountInternal(view: UIView)
+  func childrenDidUpdateInternal(view: UIView, prevProps: Any)
   func renderChildren() -> Element?
 }
 
@@ -47,11 +49,31 @@ open class HostComponent<Props, View: UIView>: HostComponentProtocol {
     }
   }
 
+  func childrenDidUpdateInternal(view: UIView, prevProps: Any) {
+    if let prevProps = prevProps as? Props, let view = view as? View {
+      self.childrenDidUpdate(view: view, prevProps: prevProps)
+    }
+  }
+
+  func childrenDidMountInternal(view: UIView) {
+    if let view = view as? View {
+      self.childrenDidMount(view: view)
+    }
+  }
+
   open func updateComponent(view: View, prevProps: Props) {
     fatalError("updateComponent needs to be overridden")
   }
   
   open func renderChildren() -> Element? {
     return nil
+  }
+
+  open func childrenDidMount(view: View) {
+
+  }
+
+  open func childrenDidUpdate(view: View, prevProps: Props) {
+
   }
 }

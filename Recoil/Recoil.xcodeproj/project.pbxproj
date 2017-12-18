@@ -24,6 +24,10 @@
 		8432F5761FE4939F00C67334 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5751FE4939F00C67334 /* Image.swift */; };
 		8432F5781FE4941300C67334 /* ImageHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5771FE4941300C67334 /* ImageHostView.swift */; };
 		8432F57A1FE4E76A00C67334 /* RecoilFunctionalInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5791FE4E76A00C67334 /* RecoilFunctionalInstance.swift */; };
+		8432F5801FE5CAAB00C67334 /* TextLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F57F1FE5CAAB00C67334 /* TextLiteral.swift */; };
+		8432F5821FE5CB0E00C67334 /* TextLiteralHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5811FE5CB0E00C67334 /* TextLiteralHostView.swift */; };
+		8432F5E01FE6EA6700C67334 /* BorderDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5DF1FE6EA6700C67334 /* BorderDrawing.swift */; };
+		8432F5E21FE81AA400C67334 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5E11FE81AA400C67334 /* Color.swift */; };
 		844910971FE093F00026A2DB /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844910961FE093F00026A2DB /* Style.swift */; };
 		8497B9B71FE033B300D29705 /* Recoil.h in Headers */ = {isa = PBXBuildFile; fileRef = 8497B9B51FE033B300D29705 /* Recoil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8497B9C41FE04B7500D29705 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497B9C31FE04B7500D29705 /* Component.swift */; };
@@ -53,6 +57,10 @@
 		8432F5751FE4939F00C67334 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		8432F5771FE4941300C67334 /* ImageHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHostView.swift; sourceTree = "<group>"; };
 		8432F5791FE4E76A00C67334 /* RecoilFunctionalInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoilFunctionalInstance.swift; sourceTree = "<group>"; };
+		8432F57F1FE5CAAB00C67334 /* TextLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLiteral.swift; sourceTree = "<group>"; };
+		8432F5811FE5CB0E00C67334 /* TextLiteralHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLiteralHostView.swift; sourceTree = "<group>"; };
+		8432F5DF1FE6EA6700C67334 /* BorderDrawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderDrawing.swift; sourceTree = "<group>"; };
+		8432F5E11FE81AA400C67334 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		844910961FE093F00026A2DB /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		8497B9B21FE033B300D29705 /* Recoil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Recoil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8497B9B51FE033B300D29705 /* Recoil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Recoil.h; sourceTree = "<group>"; };
@@ -118,6 +126,8 @@
 				8497B9C31FE04B7500D29705 /* Component.swift */,
 				8497B9D21FE0896B00D29705 /* HostComponent.swift */,
 				844910961FE093F00026A2DB /* Style.swift */,
+				8432F5E11FE81AA400C67334 /* Color.swift */,
+				8432F5DF1FE6EA6700C67334 /* BorderDrawing.swift */,
 				8497B9C81FE0693F00D29705 /* Recoil.swift */,
 				8432F5711FE4823800C67334 /* RecoilRoot.swift */,
 				8432F5611FE2237400C67334 /* Reconciler.swift */,
@@ -134,7 +144,9 @@
 				8497B9D01FE0892700D29705 /* View.swift */,
 				8432F5751FE4939F00C67334 /* Image.swift */,
 				8432F55B1FE1DA6F00C67334 /* Text.swift */,
+				8432F57F1FE5CAAB00C67334 /* TextLiteral.swift */,
 				8432F55D1FE1DA7B00C67334 /* TextHostView.swift */,
+				8432F5811FE5CB0E00C67334 /* TextLiteralHostView.swift */,
 				8432F5771FE4941300C67334 /* ImageHostView.swift */,
 				8432F5591FE1D2AB00C67334 /* ViewHostView.swift */,
 			);
@@ -268,7 +280,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8432F5E01FE6EA6700C67334 /* BorderDrawing.swift in Sources */,
 				8497B9CF1FE07B6300D29705 /* createElement.swift in Sources */,
+				8432F5801FE5CAAB00C67334 /* TextLiteral.swift in Sources */,
 				8432F56C1FE2B76C00C67334 /* Traverse.swift in Sources */,
 				8432F5601FE2203F00C67334 /* UIView+Recoil.swift in Sources */,
 				8432F55A1FE1D2AB00C67334 /* ViewHostView.swift in Sources */,
@@ -282,6 +296,8 @@
 				8432F5781FE4941300C67334 /* ImageHostView.swift in Sources */,
 				8432F5661FE22D0800C67334 /* ChildReconciler.swift in Sources */,
 				8432F5641FE2270400C67334 /* RecoilInstance.swift in Sources */,
+				8432F5821FE5CB0E00C67334 /* TextLiteralHostView.swift in Sources */,
+				8432F5E21FE81AA400C67334 /* Color.swift in Sources */,
 				8432F5681FE23E8E00C67334 /* RecoilHostInstance.swift in Sources */,
 				8497B9C91FE0693F00D29705 /* Recoil.swift in Sources */,
 				8497B9CB1FE06B0900D29705 /* Element.swift in Sources */,

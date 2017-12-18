@@ -57,7 +57,6 @@ private func traverseAllChildrenImpl<T>(
     .component(_),
     .function(_),
     .int(_),
-    .string(_),
     .double(_):
     // Handle a single child.
     // We'll treat this name as if it were a lone item in an array, as going from
@@ -66,6 +65,10 @@ private func traverseAllChildrenImpl<T>(
     // This callback gets called with traverseContext as an argument. This is
     // passed in from the reconciler and it used there to track the children.
     callback(&traverseContext, children, nameSoFar + SEPARATOR + getKey(el: children, index: 0))
+    return 1
+  case .string(let string):
+    let el = Element.host(HostElement(type: TextLiteral.self, props: string, key: nil))
+    callback(&traverseContext, el, nameSoFar + SEPARATOR + getKey(el: children, index: 0))
     return 1
   case .array(let elements):
     // Otherwise we have an array. React also supports iterators but we won't.

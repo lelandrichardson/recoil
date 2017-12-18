@@ -8,13 +8,16 @@
 
 import Foundation
 
+func isRunningInTestEnvironment() -> Bool {
+  return true
+}
+
 /*
  BIG TODOS:
 
  - refs
  - proper handling of text children...
  - proper handling of composed Text - View -> Text components
- - functional components
  - vsync batching for setState
  - potentially throw all this work away and reimplement to mimic Fiber's architecture!
  - Animated API?
@@ -23,14 +26,8 @@ import Foundation
  - textinput host component
  - better color handling
  - view transforms
- - view border and stuff
  - better text font styling
-
-
  */
-
-
-
 
 public class Recoil {
   public static func render(_ element: Element, _ rootView: UIView) {

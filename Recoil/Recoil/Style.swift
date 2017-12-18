@@ -9,32 +9,26 @@
 import Foundation
 import YogaKit
 
-public enum Color {
-  // TODO: hsl, rgba, hex
-  case rgb(CGFloat, CGFloat, CGFloat)
-  case raw(String)
-  case uiColor(UIColor)
-  case black
-  case white
-  case clear
+public enum BorderStyle {
+  case unset
+  case solid
+  case dotted
+  case dashed
+}
 
-  func toUIColor() -> UIColor {
-    switch self {
-    case .rgb(let r, let g, let b):
-      return UIColor(red: r, green: g, blue: b, alpha: 1.0)
-    case .uiColor(let color):
-      return color
-    case .raw:
-      // TODO
-      fatalError("Color.raw(String) is not implemented yet")
-    case .black:
-      return UIColor.black
-    case .white:
-      return UIColor.white
-    case .clear:
-      return UIColor.clear
-    }
-  }
+public enum RotationUnit {
+  case deg
+  case rad
+}
+
+public enum Transform {
+  case scaleX(CGFloat)
+  case scaleY(CGFloat)
+  case translateX(CGFloat)
+  case translateY(CGFloat)
+  case rotate(CGFloat, RotationUnit)
+  case skewX(CGFloat)
+  case skewY(CGFloat)
 }
 
 final public class Style {
@@ -53,9 +47,18 @@ final public class Style {
   // Non-Yoga properties
   var backgroundColor: Color?
   var opacity: CGFloat?
-  // TODO: transforms
-  // TODO: border colors
-  // TODO: border radii
+  var transform: [Transform]?
+  var borderRadius: CGFloat?
+  var borderTopLeftRadius: CGFloat?
+  var borderTopRightRadius: CGFloat?
+  var borderBottomLeftRadius: CGFloat?
+  var borderBottomRightRadius: CGFloat?
+  var borderColor: Color?
+  var borderTopColor: Color?
+  var borderLeftColor: Color?
+  var borderBottomColor: Color?
+  var borderRightColor: Color?
+  var borderStyle: BorderStyle = .unset
 
   // Yoga Properties
   var direction: YGDirection?
@@ -215,9 +218,25 @@ final public class Style {
 
   static func merge(_ result: Style, _ toMerge: Style) -> Style {
 
+    // Text-specific props
+    if let color = toMerge.color { result.color = color }
+
     // Non-Yoga props
     if let backgroundColor = toMerge.backgroundColor { result.backgroundColor = backgroundColor }
-    if let color = toMerge.color { result.color = color }
+    if let opacity = toMerge.opacity { result.opacity = opacity }
+    if let transform = toMerge.transform { result.transform = transform }
+    if let borderRadius = toMerge.borderRadius { result.borderRadius = borderRadius }
+    if let borderTopLeftRadius = toMerge.borderTopLeftRadius { result.borderTopLeftRadius = borderTopLeftRadius }
+    if let borderTopRightRadius = toMerge.borderTopRightRadius { result.borderTopRightRadius = borderTopRightRadius }
+    if let borderBottomLeftRadius = toMerge.borderBottomLeftRadius { result.borderBottomLeftRadius = borderBottomLeftRadius }
+    if let borderBottomRightRadius = toMerge.borderBottomRightRadius { result.borderBottomRightRadius = borderBottomRightRadius }
+    if let borderColor = toMerge.borderColor { result.borderColor = borderColor }
+    if let borderTopColor = toMerge.borderTopColor { result.borderTopColor = borderTopColor }
+    if let borderLeftColor = toMerge.borderLeftColor { result.borderLeftColor = borderLeftColor }
+    if let borderBottomColor = toMerge.borderBottomColor { result.borderBottomColor = borderBottomColor }
+    if let borderRightColor = toMerge.borderRightColor { result.borderRightColor = borderRightColor }
+    if toMerge.borderStyle != .unset { result.borderStyle = toMerge.borderStyle }
+
 
     // Yoga props
     if let direction = toMerge.direction { result.direction = direction }
@@ -284,6 +303,71 @@ final public class Style {
 
   public func color(_ value: Color) -> Self {
     color = value
+    return self
+  }
+
+  public func opacity(_ value: CGFloat?) -> Self {
+    opacity = value
+    return self
+  }
+
+  public func transform(_ value: [Transform]?) -> Self {
+    transform = value
+    return self
+  }
+
+  public func borderRadius(_ value: CGFloat?) -> Self {
+    borderRadius = value
+    return self
+  }
+
+  public func borderTopLeftRadius(_ value: CGFloat?) -> Self {
+    borderTopLeftRadius = value
+    return self
+  }
+
+  public func borderTopRightRadius(_ value: CGFloat?) -> Self {
+    borderTopRightRadius = value
+    return self
+  }
+
+  public func borderBottomLeftRadius(_ value: CGFloat?) -> Self {
+    borderBottomLeftRadius = value
+    return self
+  }
+
+  public func borderBottomRightRadius(_ value: CGFloat?) -> Self {
+    borderBottomRightRadius = value
+    return self
+  }
+
+  public func borderColor(_ value: Color?) -> Self {
+    borderColor = value
+    return self
+  }
+
+  public func borderTopColor(_ value: Color?) -> Self {
+    borderTopColor = value
+    return self
+  }
+
+  public func borderLeftColor(_ value: Color?) -> Self {
+    borderLeftColor = value
+    return self
+  }
+
+  public func borderBottomColor(_ value: Color?) -> Self {
+    borderBottomColor = value
+    return self
+  }
+
+  public func borderRightColor(_ value: Color?) -> Self {
+    borderRightColor = value
+    return self
+  }
+
+  public func borderStyle(_ value: BorderStyle) -> Self {
+    borderStyle = value
     return self
   }
 
@@ -575,5 +659,4 @@ final public class Style {
     maxHeight = value
     return self
   }
-
 }

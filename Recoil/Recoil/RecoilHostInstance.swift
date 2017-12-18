@@ -14,7 +14,7 @@ enum Operation {
   case remove(fromIndex: Int /*, fromNode: UIView */)
 }
 
-func getHostElement(_ element: Element) -> HostElement {
+private func getHostElement(_ element: Element) -> HostElement {
   switch element {
   case .host(let hostElement):
     return hostElement
@@ -23,31 +23,29 @@ func getHostElement(_ element: Element) -> HostElement {
   }
 }
 
-func flatten(children: Element?) -> [String: Element] {
+private func flatten(children: Element?) -> [String: Element] {
   var flattenedChildren: [String: Element] = [:]
 
   let _ = traverseAllChildren(children, &flattenedChildren) { (context: inout [String: Element], child: Element, name: String) in
     context[name] = child
   }
 
-  return flattenedChildren;
+  return flattenedChildren
 }
 
 // In React we do this in an injection point, allowing MultiChild to be used
 // across renderers. We don't do that here to reduce overhead.
-func processQueue(parentNode: UIView, updates: [Operation]) {
+private func processQueue(parentNode: UIView, updates: [Operation]) {
   for update in updates {
     switch update {
-    case .insert(let content, let toIndex):
-      parentNode.insertSubview(content, at: toIndex)
+    case let .insert(content, toIndex):
+      parentNode.insertRecoilSubview(content, at: toIndex)
       break
-    case .move(let fromIndex, let toIndex):
-      let view = parentNode.subviews[fromIndex]
-      parentNode.insertSubview(view, at: toIndex)
+    case let .move(fromIndex, toIndex):
+      parentNode.moveRecoilSubview(from: fromIndex, to: toIndex)
       break
-    case .remove(let fromIndex):
-      let view = parentNode.subviews[fromIndex]
-      view.removeFromSuperview()
+    case let .remove(fromIndex):
+      parentNode.removeRecoilSubview(from: fromIndex)
       break
     }
   }
@@ -86,14 +84,17 @@ class RecoilHostInstance: RecoilInstance {
     if let children = children {
       let mountedChildren = mountChildren(children: children)
 
+      var i = 0
       for child in mountedChildren {
         if let child = child {
-          view.addSubview(child)
+          view.insertRecoilSubview(child, at: i)
+          i += 1
         }
       }
     }
 
     root?.enqueueLayout()
+    component?.childrenDidMountInternal(view: view)
 
     return view
   }
@@ -123,6 +124,7 @@ class RecoilHostInstance: RecoilInstance {
       updateChildren(nextChildren: children)
     }
     root?.enqueueLayout()
+    component.childrenDidUpdateInternal(view: view, prevProps: prevHostElement.props)
   }
 
   func performUpdateIfNecessary() {

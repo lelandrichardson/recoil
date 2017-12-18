@@ -10,17 +10,17 @@ import Foundation
 import UIKit
 import YogaKit
 
-public class TextProps {
+public class TextProps: ChildrenProps {
   var style: Style?
-  var text: String?
   var numberOfLines: Int = 0
+  var children: Element?
   public init() {}
   public func style(_ value: Style?) -> Self {
     style = value
     return self
   }
-  public func text(_ value: String?) -> Self {
-    text = value
+  public func children(_ value: Element?) -> Self {
+    children = value
     return self
   }
 }
@@ -42,15 +42,19 @@ final public class Text: HostComponent<TextProps, TextHostView> {
     if let style = props.style {
       style.applyTo(label: view)
     }
-    if let text = props.text {
-      view.text = text
-      view.yoga.markDirty()
-    }
     view.numberOfLines = props.numberOfLines
   }
 
   override public func renderChildren() -> Element? {
-    return nil
+    return props.children
+  }
+
+  override public func childrenDidUpdate(view: TextHostView, prevProps: TextProps) {
+    view.updateTextIfNeeded()
+  }
+
+  override public func childrenDidMount(view: TextHostView) {
+    view.updateTextIfNeeded()
   }
 }
 

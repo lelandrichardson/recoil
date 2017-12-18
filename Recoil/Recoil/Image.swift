@@ -14,7 +14,7 @@ public struct ImageSource {
   let url: String
 }
 
-public class ImageProps {
+public class ImageProps: ChildrenProps {
   var style: Style?
   var source: ImageSource?
   var children: Element?

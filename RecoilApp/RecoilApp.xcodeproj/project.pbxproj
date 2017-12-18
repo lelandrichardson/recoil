@@ -10,6 +10,7 @@
 		82D1AB48F07AF99D27024806 /* Pods_RecoilApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C9A07F959D622E1C35FE7B1 /* Pods_RecoilApp.framework */; };
 		8432F5701FE47BC600C67334 /* FunctionalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F56F1FE47BC600C67334 /* FunctionalApp.swift */; };
 		8432F5741FE4835100C67334 /* KeyExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5731FE4835100C67334 /* KeyExample.swift */; };
+		8432F57C1FE4F04F00C67334 /* DesiredSwiftXSyntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F57B1FE4F04F00C67334 /* DesiredSwiftXSyntax.swift */; };
 		8497B9971FE0338900D29705 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497B9961FE0338900D29705 /* AppDelegate.swift */; };
 		8497B9991FE0338900D29705 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497B9981FE0338900D29705 /* ViewController.swift */; };
 		8497B99C1FE0338900D29705 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8497B99A1FE0338900D29705 /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 		4C9A07F959D622E1C35FE7B1 /* Pods_RecoilApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecoilApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8432F56F1FE47BC600C67334 /* FunctionalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionalApp.swift; sourceTree = "<group>"; };
 		8432F5731FE4835100C67334 /* KeyExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyExample.swift; sourceTree = "<group>"; };
+		8432F57B1FE4F04F00C67334 /* DesiredSwiftXSyntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredSwiftXSyntax.swift; sourceTree = "<group>"; };
 		8497B9931FE0338900D29705 /* RecoilApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecoilApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8497B9961FE0338900D29705 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8497B9981FE0338900D29705 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				8497B9CC1FE0795A00D29705 /* App.swift */,
 				8432F5731FE4835100C67334 /* KeyExample.swift */,
 				8432F56F1FE47BC600C67334 /* FunctionalApp.swift */,
+				8432F57B1FE4F04F00C67334 /* DesiredSwiftXSyntax.swift */,
 			);
 			path = RecoilApp;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			files = (
 				8432F5741FE4835100C67334 /* KeyExample.swift in Sources */,
 				8497B9CD1FE0795A00D29705 /* App.swift in Sources */,
+				8432F57C1FE4F04F00C67334 /* DesiredSwiftXSyntax.swift in Sources */,
 				8497B9991FE0338900D29705 /* ViewController.swift in Sources */,
 				8432F5701FE47BC600C67334 /* FunctionalApp.swift in Sources */,
 				8497B9971FE0338900D29705 /* AppDelegate.swift in Sources */,

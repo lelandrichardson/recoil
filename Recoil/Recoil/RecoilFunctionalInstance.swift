@@ -98,7 +98,7 @@ class RecoilFunctionalInstance: RecoilInstance {
         let nextView = Reconciler.mountComponent(instance: nextRenderedComponent)
 
         if let nextView = nextView {
-          parentView.insertSubview(nextView, at: renderedComponent.mountIndex)
+          parentView.insertRecoilSubview(nextView, at: renderedComponent.mountIndex)
         }
 
         self.renderedComponent = nextRenderedComponent

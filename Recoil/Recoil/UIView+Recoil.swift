@@ -37,4 +37,22 @@ extension UIView {
       view.removeFromSuperview()
     }
   }
+
+  // NOTE: @objc is needed to allow for overriding
+  @objc
+  func insertRecoilSubview(_ view: UIView, at index: Int) {
+    self.insertSubview(view, at: index)
+  }
+
+  @objc
+  func moveRecoilSubview(from fromIndex: Int, to toIndex: Int) {
+    let view = self.subviews[fromIndex]
+    self.insertSubview(view, at: toIndex)
+  }
+
+  @objc
+  func removeRecoilSubview(from fromIndex: Int) {
+    let view = self.subviews[fromIndex]
+    view.removeFromSuperview()
+  }
 }

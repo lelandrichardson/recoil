@@ -16,7 +16,7 @@ func FunctionalComponent(props: (foo: String, bar: Int)) -> Element? {
     .children(h([
       h(Text.self, TextProps()
         .style(Style().color(.white))
-        .text("Count: \(props.foo), Click me!")
+        .children(h("Count: \(props.foo), Click me!"))
       ),
     ]))
   )
