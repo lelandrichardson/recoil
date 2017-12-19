@@ -72,7 +72,7 @@ public class Recoil {
 
     let view = Reconciler.mountComponent(instance: instance)
 
-     rootView.removeAllSubviews()
+    rootView.removeAllSubviews()
 
     if let view = view {
       rootView.addSubview(view)
