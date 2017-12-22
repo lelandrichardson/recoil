@@ -1,29 +1,28 @@
 package com.airbnb.android.recoil
 
 import android.content.Context
-import android.view.ViewGroup
 
-abstract class HostComponent<Props, ViewType: ViewGroup>(override var props: Props): BaseComponent<Props> {
+abstract class HostComponent<Props, ViewType: RecoilView>(override var props: Props): BaseComponent<Props> {
   internal fun setPropsInternal(props: Any) {
     @Suppress("UNCHECKED_CAST")
     this.props = props as Props
   }
 
-  fun mountComponentInternal(context: Context): ViewGroup {
+  fun mountComponentInternal(context: Context): RecoilView {
     return mountComponent(context)
   }
 
-  fun updateComponentInternal(view: ViewGroup, prevProps: Any) {
+  fun updateComponentInternal(view: RecoilView, prevProps: Any) {
     @Suppress("UNCHECKED_CAST")
     updateComponent(view as ViewType, prevProps as Props)
   }
 
-  fun childrenDidUpdateInternal(view: ViewGroup, prevProps: Any) {
+  fun childrenDidUpdateInternal(view: RecoilView, prevProps: Any) {
     @Suppress("UNCHECKED_CAST")
     childrenDidUpdate(view as ViewType, prevProps as Props)
   }
 
-  fun childrenDidMountInternal(view: ViewGroup) {
+  fun childrenDidMountInternal(view: RecoilView) {
     @Suppress("UNCHECKED_CAST")
     childrenDidMount(view as ViewType)
   }

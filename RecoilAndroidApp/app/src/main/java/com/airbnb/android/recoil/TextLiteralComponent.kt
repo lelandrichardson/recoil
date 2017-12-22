@@ -1,9 +1,19 @@
 package com.airbnb.android.recoil
 
 import android.content.Context
-import com.facebook.yoga.android.VirtualYogaLayout
+import android.view.View
+import com.facebook.yoga.YogaNode
 
-class TextLiteralHostView(context: Context): VirtualYogaLayout(context) {
+class TextLiteralHostView(context: Context): View(context), RecoilView {
+  override var yogaNode: YogaNode = YogaNode()
+  override fun getHostView(): View = this
+  override fun getYogaNodeForView(view: View): YogaNode? = null
+  override fun getRecoilSubviewAt(index: Int): RecoilView?  = null
+  override fun insertRecoilSubview(view: RecoilView, index: Int) {}
+  override fun moveRecoilSubview(fromIndex: Int, toIndex: Int) {}
+  override fun removeRecoilSubview(fromIndex: Int) {}
+  override fun getRecoilParent(): RecoilView? = parent as? RecoilView
+
   var text: String? = null
 }
 

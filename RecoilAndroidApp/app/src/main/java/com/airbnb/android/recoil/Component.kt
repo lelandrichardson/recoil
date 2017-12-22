@@ -1,39 +1,56 @@
 package com.airbnb.android.recoil
 
+import android.os.Handler
+import android.os.Looper
+
 interface BaseComponent<Props> {
   var props: Props
 }
 
 abstract class Component<Props, State>(override var props: Props): BaseComponent<Props> {
   var state: State = getInitialState()
-  var instance: RecoilCompositeInstance? = null
+  internal var instance: RecoilCompositeInstance? = null
 
-  fun setPropsInternal(props: Any) {
+  internal fun setPropsInternal(props: Any) {
     @Suppress("UNCHECKED_CAST")
     this.props = props as Props
   }
-  fun setStateInternal(state: Any) {
+  internal fun setStateInternal(state: Any) {
     @Suppress("UNCHECKED_CAST")
     this.state = state as State
   }
-  fun getStateInternal(): Any {
-    return this.props as Any
+  internal fun getStateInternal(): Any {
+    return this.state as Any
   }
-  fun componentWillUpdateInternal(nextProps: Any, nextState: Any) {
+  internal fun componentWillUpdateInternal(nextProps: Any, nextState: Any) {
     @Suppress("UNCHECKED_CAST")
     return componentWillUpdate(nextProps as Props, nextState as State)
   }
-  fun componentDidUpdateInternal(prevProps: Any, prevState: Any) {
+  internal fun componentDidUpdateInternal(prevProps: Any, prevState: Any) {
     @Suppress("UNCHECKED_CAST")
     return componentDidUpdate(prevProps as Props, prevState as State)
   }
-  fun componentWillReceivePropsInternal(nextProps: Any) {
+  internal fun componentWillReceivePropsInternal(nextProps: Any) {
     @Suppress("UNCHECKED_CAST")
     return componentWillReceiveProps(nextProps as Props)
   }
-  fun shouldComponentUpdateInternal(nextProps: Any, nextState: Any): Boolean {
+  internal fun shouldComponentUpdateInternal(nextProps: Any, nextState: Any): Boolean {
     @Suppress("UNCHECKED_CAST")
     return shouldComponentUpdate(nextProps as Props, nextState as State)
+  }
+  fun setState(updater: (State) -> State) {
+    setState { state, _ -> updater(state) }
+  }
+  fun setState(updater: (State, Props) -> State) {
+    Handler(Looper.getMainLooper()).post {
+      val instance = instance ?: throw IllegalStateException()
+
+      @Suppress("UNCHECKED_CAST")
+      val pendingState = instance.pendingState as? State ?: state
+
+      instance.pendingState = updater(pendingState, props)
+      Reconciler.performUpdateIfNecessary(instance)
+    }
   }
 
   // MARK: public overridable lifecycle methods

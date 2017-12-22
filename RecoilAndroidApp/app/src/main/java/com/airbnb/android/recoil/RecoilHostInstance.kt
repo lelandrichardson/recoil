@@ -1,7 +1,5 @@
 package com.airbnb.android.recoil
 
-import android.view.ViewGroup
-
 enum class OperationType {
   Insert,
   Move,
@@ -10,7 +8,7 @@ enum class OperationType {
 
 data class Operation(
   val type: OperationType,
-  val content: ViewGroup? = null
+  val content: RecoilView? = null
 ) {
   var toIndex: Int = -1
   var fromIndex: Int = -1
@@ -18,7 +16,7 @@ data class Operation(
 
 
 private fun flatten(children: Element?): Map<String, Element> {
-  var flattenedChildren = mutableMapOf<String, Element>()
+  val flattenedChildren = mutableMapOf<String, Element>()
 
   traverseAllChildren(children, flattenedChildren) { context, child, name ->
     context[name] = child
@@ -29,7 +27,7 @@ private fun flatten(children: Element?): Map<String, Element> {
 
 // In React we do this in an injection point, allowing MultiChild to be used
 // across renderers. We don't do that here to reduce overhead.
-private fun processQueue(parentNode: ViewGroup, updates: List<Operation>) {
+private fun processQueue(parentNode: RecoilView, updates: List<Operation>) {
   for (update in updates) {
     when (update.type) {
       OperationType.Insert -> if (update.content != null) parentNode.insertRecoilSubview(update.content, update.toIndex) else return
@@ -44,12 +42,12 @@ class RecoilHostInstance(
   override var root: RecoilRoot?
 ): RecoilInstance {
   override var mountIndex: Int = -1
-  override var view: ViewGroup? = null
-  var component: HostComponent<*, *>? = null
-  var children: Element? = null
-  var renderedChildren: Map<String, RecoilInstance>? = null
+  override var view: RecoilView? = null
+  private var component: HostComponent<*, *>? = null
+  private var children: Element? = null
+  private var renderedChildren: Map<String, RecoilInstance>? = null
 
-  override fun mountComponent(): ViewGroup? {
+  override fun mountComponent(): RecoilView? {
     val root = root ?: throw IllegalStateException()
 
     val instance = currentElement.makeHostInstance()
@@ -123,7 +121,7 @@ class RecoilHostInstance(
     ChildReconciler.unmountChildren(renderedChildren)
   }
 
-  private fun mountChildren(children: Element): List<ViewGroup?> {
+  private fun mountChildren(children: Element): List<RecoilView?> {
     // Instantiate all of the actual child instances into a flat object. This
     // handles all of the complicated logic around flattening subarrays.
     val rendered = ChildReconciler.instantiateChildren(children, root)
@@ -149,7 +147,7 @@ class RecoilHostInstance(
   private fun updateChildren(nextChildren: Element?) {
     val prevRenderedChildren = renderedChildren ?: mutableMapOf()
 
-    val mountImages = mutableListOf<ViewGroup>()
+    val mountImages = mutableListOf<RecoilView?>()
     val removedNodes = mutableMapOf<String, RecoilInstance>()
 
     val nextRenderedChildren = flatten(nextChildren)
@@ -169,7 +167,7 @@ class RecoilHostInstance(
     // already determined by the ChildReconciler.
 
     // We'll store a serious of update operations here.
-    var updates = mutableListOf<Operation>()
+    val updates = mutableListOf<Operation>()
 
     var lastIndex = 0
     var nextMountIndex = 0
@@ -189,7 +187,7 @@ class RecoilHostInstance(
           val op = Operation(OperationType.Move, null)
           op.fromIndex = prevChild.mountIndex
           op.toIndex = nextIndex
-          updates.plus(op)
+          updates.add(op)
         }
         lastIndex = maxOf(prevChild.mountIndex, lastIndex)
         prevChild.mountIndex = nextIndex
@@ -203,14 +201,10 @@ class RecoilHostInstance(
 
         nextChild.mountIndex = nextIndex
         val content = mountImages[nextMountIndex]
-        if (content == null) {
-          // this maybe shouldnt be a fatal... i'm not sure...
-          throw IllegalStateException("")
-        }
 
         val op = Operation(OperationType.Insert, content)
         op.toIndex = nextChild.mountIndex
-        updates.plus(op)
+        updates.add(op)
         nextMountIndex += 1
       }
 
@@ -220,13 +214,10 @@ class RecoilHostInstance(
 
     // Enqueue removals
     for ((childKey, _) in removedNodes) {
-      val prevInstance = prevRenderedChildren[childKey]
-      if (prevInstance == null) {
-        throw IllegalStateException("")
-      }
+      val prevInstance = prevRenderedChildren[childKey] ?: throw IllegalStateException("")
       val op = Operation(OperationType.Remove, null)
       op.fromIndex = prevInstance.mountIndex
-      updates.plus(op)
+      updates.add(op)
     }
 
     val view = this.view ?: throw IllegalStateException("")

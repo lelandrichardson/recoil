@@ -1,7 +1,5 @@
 package com.airbnb.android.recoil
 
-import android.view.ViewGroup
-
 object Reconciler {
   fun instantiateComponent(element: Element, root: RecoilRoot?): RecoilInstance {
     return when (element.tag) {
@@ -12,7 +10,7 @@ object Reconciler {
     }
   }
 
-  fun mountComponent(instance: RecoilInstance): ViewGroup? {
+  fun mountComponent(instance: RecoilInstance): RecoilView? {
     val view = instance.mountComponent()
 
     // React does more work here to ensure that refs work. We don't need to yet.
@@ -24,7 +22,7 @@ object Reconciler {
     // current one. This is unlikely in normal JSX usage, but it an optimization
     // that can be unlocked with Babel's inline-element transform.
 
-    val prevElement = instance.currentElement;
+    val prevElement = instance.currentElement
     if (prevElement == element) {
       return
     }

@@ -5,8 +5,8 @@ import android.content.Context
 data class ViewProps(
   val style: Style? = null,
   val onPress: (() -> Unit)? = null,
-  var children: Element? = null
-)
+  override var children: Element? = null
+): ChildrenProps
 
 class View(override var props: ViewProps): HostComponent<ViewProps, ViewHostView>(props) {
   override fun mountComponent(context: Context): ViewHostView {
@@ -26,6 +26,7 @@ class View(override var props: ViewProps): HostComponent<ViewProps, ViewHostView
         view.setBackgroundColor(props.style.backgroundColor)
       }
     }
+    view.onPress = props.onPress
   }
 
   override fun renderChildren(): Element? = props.children

@@ -14,6 +14,7 @@ class MainActivity: AppCompatActivity() {
     SoLoader.init(this, false)
 
     setContentView(R.layout.activity_main)
+
     val rootView = findViewById(R.id.root) as? ViewGroup ?: throw IllegalStateException()
 
     val el = h(::App, AppProps(
@@ -21,5 +22,7 @@ class MainActivity: AppCompatActivity() {
     ))
 
     Recoil.render(el, rootView)
+
+//    rootView.requestLayout()
   }
 }

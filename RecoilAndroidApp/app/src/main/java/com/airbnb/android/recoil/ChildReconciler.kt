@@ -1,7 +1,5 @@
 package com.airbnb.android.recoil
 
-import android.view.ViewGroup
-
 data class TraversalContext(
   var root: RecoilRoot?
 ) {
@@ -32,11 +30,11 @@ object ChildReconciler {
   fun updateChildren(
       prevChildren: Map<String, RecoilInstance>, // Instances, as created above
       nextChildren: Map<String, Element>, // Actually elements
-      mountImages: List<ViewGroup?>,
+      mountImages: MutableList<RecoilView?>,
       removedChildren: MutableMap<String, RecoilInstance>,
       root: RecoilRoot?
   ): Map<String, RecoilInstance> {
-    val nextChildrenInstances = mutableMapOf<String, RecoilInstance>()
+    val nextChildrenInstances = LinkedHashMap<String, RecoilInstance>()
     // Loop over our new children and determine what is being updated, removed,
     // and created.
     for ((childKey, nextElement) in nextChildren) {
@@ -67,7 +65,7 @@ object ChildReconciler {
         nextChildrenInstances[childKey] = nextChild
 
         // React does this here so that refs resolve in the correct order.
-        mountImages.plus(Reconciler.mountComponent(nextChild))
+        mountImages.add(Reconciler.mountComponent(nextChild))
       }
     }
 

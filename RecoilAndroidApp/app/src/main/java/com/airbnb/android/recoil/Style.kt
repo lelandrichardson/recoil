@@ -1,5 +1,6 @@
 package com.airbnb.android.recoil
 
+import android.content.res.Resources
 import com.facebook.yoga.*
 
 
@@ -307,7 +308,7 @@ data class Style(
     }
 
     if (flag.dirty) {
-      node.dirty()
+//      node.dirty()
     }
   }
 
@@ -359,7 +360,7 @@ data class Style(
     return merge(this, rhs)
   }
 
-  fun merge(a: Style, b: Style): Style {
+  private fun merge(a: Style, b: Style): Style {
     return Style(
       // Text-specific props
       color = b.color ?: a.color,
@@ -428,9 +429,15 @@ data class Style(
 
 private data class DirtyFlag(var dirty: Boolean)
 
+// TODO: multiply value by number of pixels to points...
+
+val metrics = Resources.getSystem().displayMetrics
+
+val dpToPx = metrics.densityDpi / 160f
+
 val Int.pct: YogaValue get() = YogaValue(this.toFloat(), YogaUnit.PERCENT)
-val Int.pt: YogaValue get() = YogaValue(this.toFloat(), YogaUnit.POINT)
+val Int.pt: YogaValue get() = YogaValue(this.toFloat() * dpToPx, YogaUnit.POINT)
 val Float.pct: YogaValue get() = YogaValue(this, YogaUnit.PERCENT)
-val Float.pt: YogaValue get() = YogaValue(this, YogaUnit.POINT)
+val Float.pt: YogaValue get() = YogaValue(this * dpToPx, YogaUnit.POINT)
 val Double.pct: YogaValue get() = YogaValue(this.toFloat(), YogaUnit.PERCENT)
-val Double.pt: YogaValue get() = YogaValue(this.toFloat(), YogaUnit.POINT)
+val Double.pt: YogaValue get() = YogaValue(this.toFloat() * dpToPx, YogaUnit.POINT)

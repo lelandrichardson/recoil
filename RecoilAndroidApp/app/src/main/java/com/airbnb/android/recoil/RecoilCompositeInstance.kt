@@ -1,19 +1,17 @@
 package com.airbnb.android.recoil
 
-import android.view.ViewGroup
-
 
 class RecoilCompositeInstance(
   override var currentElement: Element,
   override var root: RecoilRoot?
 ): RecoilInstance {
-  override var view: ViewGroup? = null
+  override var view: RecoilView? = null
   override var mountIndex: Int = -1
-  var pendingState: Any? = null
-  var component: Component<*, *>? = null
-  var renderedComponent: RecoilInstance? = null
+  internal var pendingState: Any? = null
+  private var component: Component<*, *>? = null
+  private var renderedComponent: RecoilInstance? = null
 
-  override fun mountComponent(): ViewGroup? {
+  override fun mountComponent(): RecoilView? {
     // This is where the magic starts to happen. We call the render method to
     // get our actual rendered element. Note: since we (and React) don't support
     // Arrays or other types, we can safely assume we have an element.
@@ -110,11 +108,12 @@ class RecoilCompositeInstance(
       }
 
       val prevRenderedView = renderedComponent.view
+      val mountIndex = renderedComponent.mountIndex
       Reconciler.unmountComponent(renderedComponent)
 
-      // TODO: androidify this
-      val parentView = prevRenderedView?.parent as? ViewGroup ?: throw IllegalStateException("")
-      prevRenderedView.removeView(prevRenderedView)
+      // TODO: this will break if this is the root view...
+      val parentView = prevRenderedView?.getRecoilParent() ?: throw IllegalStateException("")
+      parentView.removeRecoilSubview(mountIndex)
 
       if (nextRenderedElement != null) {
         val nextRenderedComponent = Reconciler.instantiateComponent(nextRenderedElement, root)
@@ -123,7 +122,7 @@ class RecoilCompositeInstance(
         component.componentDidMount()
 
         if (nextView != null) {
-          parentView.insertRecoilSubview(nextView, renderedComponent.mountIndex)
+          parentView.insertRecoilSubview(nextView, mountIndex)
         }
 
         this.renderedComponent = nextRenderedComponent

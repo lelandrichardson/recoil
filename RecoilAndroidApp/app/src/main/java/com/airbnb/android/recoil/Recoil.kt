@@ -37,7 +37,7 @@ object Recoil {
     rootView.removeAllViews()
 
     if (view != null) {
-      rootView.addView(view)
+      rootView.addView(view.getHostView())
     }
 
     // let yoga do its thing

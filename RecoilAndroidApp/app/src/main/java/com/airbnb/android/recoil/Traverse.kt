@@ -29,7 +29,7 @@ private fun <T> traverseAllChildrenImpl(
 
   when (children.tag) {
     Tag.Array -> {
-      val elements = children.props as? Array<*> ?: throw IllegalStateException("")
+      val elements = children.props as? List<*> ?: throw IllegalStateException("")
       // Otherwise we have an array. React also supports iterators but we won't.
       // We need to return the number of children so start tracking that.
       // Note that this isn't simply children.length - since children can contain nested
