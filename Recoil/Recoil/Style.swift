@@ -9,6 +9,17 @@
 import Foundation
 import YogaKit
 
+let zeroScaleThreshold = CGFloat(Float.ulpOfOne)
+
+func radians(_ val: CGFloat, _ unit: RotationUnit) -> CGFloat {
+  switch unit {
+  case .deg:
+    return val * CGFloat.pi / 180
+  case .rad:
+    return val
+  }
+}
+
 public enum BorderStyle {
   case unset
   case solid
@@ -22,13 +33,18 @@ public enum RotationUnit {
 }
 
 public enum Transform {
+  case perspective(CGFloat)
+  case scale(CGFloat)
   case scaleX(CGFloat)
   case scaleY(CGFloat)
+  case translate(CGFloat, CGFloat, CGFloat)
   case translateX(CGFloat)
   case translateY(CGFloat)
-  case rotate(CGFloat, RotationUnit)
-  case skewX(CGFloat)
-  case skewY(CGFloat)
+  case rotateX(CGFloat, RotationUnit)
+  case rotateY(CGFloat, RotationUnit)
+  case rotateZ(CGFloat, RotationUnit)
+  case skewX(CGFloat, RotationUnit)
+  case skewY(CGFloat, RotationUnit)
 }
 
 final public class Style {
@@ -150,6 +166,41 @@ final public class Style {
     }
     if let opacity = opacity {
       view.alpha = opacity
+    }
+    if let transformArray = self.transform {
+      var t = CATransform3DConcat(CATransform3DIdentity, CATransform3DIdentity)
+      for tconfig in transformArray {
+        switch tconfig {
+        case let .perspective(val):
+          t.m34 = -1 / val
+        case let .rotateX(x, unit):
+          t = CATransform3DRotate(t, radians(x, unit), 1, 0, 0)
+        case let .rotateY(y, unit):
+          t = CATransform3DRotate(t, radians(y, unit), 0, 1, 0)
+        case let .rotateZ(z, unit):
+          t = CATransform3DRotate(t, radians(z, unit), 0, 0, 1)
+        case let .scale(scale):
+          let scaleValue = (abs(scale) > zeroScaleThreshold) ? scale : zeroScaleThreshold
+          t = CATransform3DScale(t, scaleValue, scaleValue, 1)
+        case let .scaleX(scaleX):
+          let x = (abs(scaleX) > zeroScaleThreshold) ? scaleX : zeroScaleThreshold
+          t = CATransform3DScale(t, x, 1, 1)
+        case let .scaleY(scaleY):
+          let y = (abs(scaleY) > zeroScaleThreshold) ? scaleY : zeroScaleThreshold
+          t = CATransform3DScale(t, 1, y, 1)
+        case let .translate(x, y, z):
+          t = CATransform3DTranslate(t, x, y, z)
+        case let .translateX(x):
+          t = CATransform3DTranslate(t, x, 0, 0)
+        case let .translateY(y):
+          t = CATransform3DTranslate(t, 0, y, 0)
+        case let .skewX(skewX, unit):
+          t.m21 = CGFloat(tanf(Float(radians(skewX, unit))))
+        case let .skewY(skewY, unit):
+          t.m12 = CGFloat(tanf(Float(radians(skewY, unit))))
+        }
+      }
+      view.layer.transform = t
     }
   }
 

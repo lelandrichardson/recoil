@@ -72,12 +72,12 @@ class App: Component<AppProps, AppState> {
      */
 
     var children = [
-      h(Image.self, key: 0, ImageProps()
+      h(View.self, key: 0, ViewProps()
         .style(styles.child + styles.red)
-        .source("https://unsplash.it/80/80?image=123")
+//        .source("https://unsplash.it/80/80?image=123")
       ),
       h(View.self, key: 1, ViewProps()
-        .style(styles.child + Style().width(state.count % 10 == 0 ? 60 : 80))
+        .style(styles.borderChild + Style().width(state.count % 10 == 0 ? 60 : 80))
       ),
     ]
 
@@ -112,6 +112,9 @@ private struct Styles {
   let child = Style()
     .width(60)
     .height(60)
+  let borderChild = Style()
+    .width(60)
+    .height(60)
     .borderWidth(2)
     .borderLeftWidth(20)
     .borderLeftColor(.white)
@@ -119,7 +122,13 @@ private struct Styles {
     .borderStyle(.solid)
     .backgroundColor(.clear)
   let green = Style().backgroundColor(.uiColor(UIColor.green))
-  let red = Style().backgroundColor(.uiColor(UIColor.red))
+  let red = Style()
+    .backgroundColor(.uiColor(UIColor.red))
+    .transform([
+      .translateY(300),
+      .rotateZ(30, .deg),
+//      .scaleX(4),
+    ])
   let blue = Style().backgroundColor(.uiColor(UIColor.blue))
   let purple = Style().backgroundColor(.uiColor(UIColor.purple))
 }

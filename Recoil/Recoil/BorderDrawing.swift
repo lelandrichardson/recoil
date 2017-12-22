@@ -294,9 +294,6 @@ private func RCTGetSolidBorderImage(
 
   ctx.addPath(path)
 
-  // TODO: do i need to do this?
-  // CGPathRelease(path);
-
   let insetPath = RCTPathCreateWithRoundedRect(bounds: UIEdgeInsetsInsetRect(rect, borderInsets), cornerInsets: cornerInsets, transform: nil);
 
   ctx.addPath(insetPath)

@@ -60,6 +60,7 @@ final public class Image: HostComponent<ImageProps, ImageHostView> {
       style.applyTo(view: view)
     }
     view.source = props.source
+    view.contentMode = .center
   }
 
   override public func renderChildren() -> Element? {
