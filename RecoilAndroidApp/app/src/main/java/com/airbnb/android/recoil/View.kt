@@ -22,9 +22,7 @@ class View(override var props: ViewProps): HostComponent<ViewProps, ViewHostView
   private fun applyProps(view: ViewHostView, props: ViewProps) {
     if (props.style != null) {
       props.style.applyTo(view.yogaNode)
-      if (props.style.backgroundColor != null) {
-        view.setBackgroundColor(props.style.backgroundColor)
-      }
+      props.style.applyTo(view)
     }
     view.onPress = props.onPress
   }

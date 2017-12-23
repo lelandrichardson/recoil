@@ -1,6 +1,7 @@
 package com.airbnb.android.recoil
 
 import android.content.res.Resources
+import android.view.View
 import com.facebook.yoga.*
 
 
@@ -16,21 +17,96 @@ enum class RotationUnit {
   rad
 }
 
-data class Transform(
-  var value: Float
-)
-
 typealias Color = Int
 
-//enum class Transform {
-//  case scaleX(Float)
-//  case scaleY(Float)
-//  case translateX(Float)
-//  case translateY(Float)
-//  case rotate(Float, RotationUnit)
-//  case skewX(Float)
-//  case skewY(Float)
-//}
+sealed class Transform {
+  abstract fun transform(m: Matrix): Matrix
+
+  class Perspective(val value: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyPerspective(m, value)
+      return m
+    }
+  }
+
+  class Scale(val value: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyScaleX(m, value)
+      MatrixMathHelper.applyScaleY(m, value)
+      return m
+    }
+  }
+  class ScaleX(val value: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyScaleX(m, value)
+      return m
+    }
+  }
+  class ScaleY(val value: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyScaleY(m, value)
+      return m
+    }
+  }
+  class Translate(val x: Double, val y: Double, val z: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyTranslate2D(m, x, y)
+      return m
+    }
+  }
+  class TranslateX(val value: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyTranslate2D(m, value, 0.0)
+      return m
+    }
+  }
+  class TranslateY(val value: Double): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      MatrixMathHelper.applyTranslate2D(m, 0.0, value)
+      return m
+    }
+  }
+  class RotateX(val value: Double, val unit: RotationUnit): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      val radians = toRadians(value, unit)
+      MatrixMathHelper.applyRotateX(m, radians)
+      return m
+    }
+  }
+  class RotateY(val value: Double, val unit: RotationUnit): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      val radians = toRadians(value, unit)
+      MatrixMathHelper.applyRotateY(m, radians)
+      return m
+    }
+  }
+  class RotateZ(val value: Double, val unit: RotationUnit): Transform()  {
+    override fun transform(m: Matrix): Matrix {
+      val radians = toRadians(value, unit)
+      MatrixMathHelper.applyRotateZ(m, radians)
+      return m
+    }
+  }
+  class SkewX(val value: Double, val unit: RotationUnit): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      val radians = toRadians(value, unit)
+      MatrixMathHelper.applySkewX(m, radians)
+      return m
+    }
+  }
+  class SkewY(val value: Double, val unit: RotationUnit): Transform() {
+    override fun transform(m: Matrix): Matrix {
+      val radians = toRadians(value, unit)
+      MatrixMathHelper.applySkewY(m, radians)
+      return m
+    }
+  }
+
+  internal fun toRadians(value: Double, unit: RotationUnit): Double = when (unit) {
+    RotationUnit.deg -> value * Math.PI / 180
+    RotationUnit.rad -> value
+  }
+}
 
 
 data class Style(
@@ -100,8 +176,30 @@ data class Style(
     val maxWidth: YogaValue? = null,
     val maxHeight: YogaValue? = null
 ) {
+  fun applyTo(view: View) {
+    if (backgroundColor != null) {
+      view.setBackgroundColor(backgroundColor)
+    }
+    if (transform != null) {
+      var t = MatrixMathHelper.createIdentityMatrix()
+      for (spec in transform) {
+        t = spec.transform(t)
+      }
+
+      val sMatrixDecompositionContext = MatrixMathHelper.MatrixDecompositionContext()
+
+      MatrixMathHelper.decomposeMatrix(t, sMatrixDecompositionContext)
+
+      view.translationX = dpToPx * sMatrixDecompositionContext.translation[0].toFloat() // TODO: convert to px from dp
+      view.translationY = dpToPx * sMatrixDecompositionContext.translation[1].toFloat()
+      view.rotation = sMatrixDecompositionContext.rotationDegrees[2].toFloat()
+      view.rotationX = sMatrixDecompositionContext.rotationDegrees[0].toFloat()
+      view.rotationY = sMatrixDecompositionContext.rotationDegrees[1].toFloat()
+      view.scaleX = sMatrixDecompositionContext.scale[0].toFloat()
+      view.scaleY = sMatrixDecompositionContext.scale[1].toFloat()
+    }
+  }
   fun applyTo(node: YogaNode) {
-    val flag = DirtyFlag(false)
 
     // flex is special since if you set it, it sets multiple values. we want
     // to prevent from dirtying the node if we don't need to, so we do some custom
@@ -114,7 +212,6 @@ data class Style(
             node.flexShrink != 1f ||
             node.flexBasis.unit != YogaUnit.AUTO
           ) {
-            flag.dirty = true
             node.setFlex(flex)
           }
         }
@@ -124,7 +221,6 @@ data class Style(
             node.flexShrink != 0f ||
             node.flexBasis.unit != YogaUnit.AUTO
           ) {
-            flag.dirty = true
             node.setFlex(flex)
           }
         }
@@ -134,7 +230,6 @@ data class Style(
             node.flexShrink != 0f ||
             node.flexBasis.unit != YogaUnit.AUTO
           ) {
-            flag.dirty = true
             node.setFlex(flex)
           }
         }
@@ -146,7 +241,6 @@ data class Style(
     }
 
     if (width != null && node.width != width) {
-      flag.dirty = true
       when (width.unit) {
         YogaUnit.PERCENT -> node.setWidthPercent(width.value)
         YogaUnit.POINT -> node.setWidth(width.value)
@@ -157,7 +251,6 @@ data class Style(
 
     // YogaValue:
     if (width != null && node.width != width) {
-      flag.dirty = true
       when (width.unit) {
         YogaUnit.PERCENT -> node.setWidthPercent(width.value)
         YogaUnit.POINT -> node.setWidth(width.value)
@@ -166,7 +259,6 @@ data class Style(
       }
     }
     if (height != null && node.height != height) {
-      flag.dirty = true
       when (height.unit) {
         YogaUnit.PERCENT -> node.setHeightPercent(height.value)
         YogaUnit.POINT -> node.setHeight(height.value)
@@ -175,7 +267,6 @@ data class Style(
       }
     }
     if (minWidth != null && node.minWidth != minWidth) {
-      flag.dirty = true
       when (minWidth.unit) {
         YogaUnit.PERCENT -> node.setMinWidthPercent(minWidth.value)
         YogaUnit.POINT -> node.setMinWidth(minWidth.value)
@@ -183,7 +274,6 @@ data class Style(
       }
     }
     if (minHeight != null && node.minHeight != minHeight) {
-      flag.dirty = true
       when (minHeight.unit) {
         YogaUnit.PERCENT -> node.setMinHeightPercent(minHeight.value)
         YogaUnit.POINT -> node.setMinHeight(minHeight.value)
@@ -191,7 +281,6 @@ data class Style(
       }
     }
     if (maxWidth != null && node.maxWidth != maxWidth) {
-      flag.dirty = true
       when (maxWidth.unit) {
         YogaUnit.PERCENT -> node.setMaxWidthPercent(maxWidth.value)
         YogaUnit.POINT -> node.setMaxWidth(maxWidth.value)
@@ -199,7 +288,6 @@ data class Style(
       }
     }
     if (maxHeight != null && node.maxHeight != maxHeight) {
-      flag.dirty = true
       when (maxHeight.unit) {
         YogaUnit.PERCENT -> node.setMaxHeightPercent(maxHeight.value)
         YogaUnit.POINT -> node.setMaxHeight(maxHeight.value)
@@ -207,7 +295,6 @@ data class Style(
       }
     }
     if (flexBasis != null && node.flexBasis != flexBasis) {
-      flag.dirty = true
       when (flexBasis.unit) {
         YogaUnit.PERCENT -> node.setFlexBasisPercent(flexBasis.value)
         YogaUnit.POINT -> node.setFlexBasis(flexBasis.value)
@@ -216,89 +303,76 @@ data class Style(
       }
     }
 
-    setPosition(node, YogaEdge.TOP, top, flag)
-    setPosition(node, YogaEdge.LEFT, left, flag)
-    setPosition(node, YogaEdge.BOTTOM, bottom, flag)
-    setPosition(node, YogaEdge.RIGHT, right, flag)
+    setPosition(node, YogaEdge.TOP, top)
+    setPosition(node, YogaEdge.LEFT, left)
+    setPosition(node, YogaEdge.BOTTOM, bottom)
+    setPosition(node, YogaEdge.RIGHT, right)
 
-    setMargin(node, YogaEdge.ALL, margin, flag)
-    setMargin(node, YogaEdge.HORIZONTAL, marginHorizontal, flag)
-    setMargin(node, YogaEdge.VERTICAL, marginVertical, flag)
-    setMargin(node, YogaEdge.TOP, marginTop, flag)
-    setMargin(node, YogaEdge.LEFT, marginLeft, flag)
-    setMargin(node, YogaEdge.BOTTOM, marginBottom, flag)
-    setMargin(node, YogaEdge.RIGHT, marginRight, flag)
+    setMargin(node, YogaEdge.ALL, margin)
+    setMargin(node, YogaEdge.HORIZONTAL, marginHorizontal)
+    setMargin(node, YogaEdge.VERTICAL, marginVertical)
+    setMargin(node, YogaEdge.TOP, marginTop)
+    setMargin(node, YogaEdge.LEFT, marginLeft)
+    setMargin(node, YogaEdge.BOTTOM, marginBottom)
+    setMargin(node, YogaEdge.RIGHT, marginRight)
 
-    setPadding(node, YogaEdge.ALL, padding, flag)
-    setPadding(node, YogaEdge.HORIZONTAL, paddingHorizontal, flag)
-    setPadding(node, YogaEdge.VERTICAL, paddingVertical, flag)
-    setPadding(node, YogaEdge.TOP, paddingTop, flag)
-    setPadding(node, YogaEdge.LEFT, paddingLeft, flag)
-    setPadding(node, YogaEdge.BOTTOM, paddingBottom, flag)
-    setPadding(node, YogaEdge.RIGHT, paddingRight, flag)
+    setPadding(node, YogaEdge.ALL, padding)
+    setPadding(node, YogaEdge.HORIZONTAL, paddingHorizontal)
+    setPadding(node, YogaEdge.VERTICAL, paddingVertical)
+    setPadding(node, YogaEdge.TOP, paddingTop)
+    setPadding(node, YogaEdge.LEFT, paddingLeft)
+    setPadding(node, YogaEdge.BOTTOM, paddingBottom)
+    setPadding(node, YogaEdge.RIGHT, paddingRight)
 
-    setBorder(node, YogaEdge.ALL, borderWidth, flag)
-    setBorder(node, YogaEdge.TOP, borderTopWidth, flag)
-    setBorder(node, YogaEdge.LEFT, borderLeftWidth, flag)
-    setBorder(node, YogaEdge.BOTTOM, borderBottomWidth, flag)
-    setBorder(node, YogaEdge.RIGHT, borderRightWidth, flag)
+    setBorder(node, YogaEdge.ALL, borderWidth)
+    setBorder(node, YogaEdge.TOP, borderTopWidth)
+    setBorder(node, YogaEdge.LEFT, borderLeftWidth)
+    setBorder(node, YogaEdge.BOTTOM, borderBottomWidth)
+    setBorder(node, YogaEdge.RIGHT, borderRightWidth)
 
     if (flexDirection != null && node.flexDirection != flexDirection) {
-      flag.dirty = true
       node.flexDirection = flexDirection
     }
 
     if (justifyContent != null && node.justifyContent != justifyContent) {
-      flag.dirty = true
       node.justifyContent = justifyContent
     }
 
     if (alignContent != null && node.alignContent != alignContent) {
-      flag.dirty = true
       node.alignContent = alignContent
     }
 
     if (alignItems != null && node.alignItems != alignItems) {
-      flag.dirty = true
       node.alignItems = alignItems
     }
 
     if (alignSelf != null && node.alignSelf != alignSelf) {
-      flag.dirty = true
       node.alignSelf = alignSelf
     }
 
     if (alignSelf != null && node.alignSelf != alignSelf) {
-      flag.dirty = true
       node.alignSelf = alignSelf
     }
 
     if (position != null && node.positionType != position) {
-      flag.dirty = true
       node.positionType = position
     }
     if (flexWrap != null) {
-      flag.dirty = true
       node.setWrap(flexWrap)
     }
     if (overflow != null && node.overflow != overflow) {
-      flag.dirty = true
       node.overflow = overflow
     }
     if (display != null && node.display != display) {
-      flag.dirty = true
       node.display = display
     }
     if (flexGrow != null && node.flexGrow != flexGrow) {
-      flag.dirty = true
       node.flexGrow = flexGrow
     }
     if (flexShrink != null && node.flexShrink != flexShrink) {
-      flag.dirty = true
       node.flexShrink = flexShrink
     }
     if (flexBasis != null && node.flexBasis != flexBasis) {
-      flag.dirty = true
       when (flexBasis.unit) {
         YogaUnit.PERCENT -> node.setFlexBasisPercent(flexBasis.value)
         YogaUnit.POINT -> node.setFlexBasis(flexBasis.value)
@@ -306,15 +380,10 @@ data class Style(
         else -> Unit
       }
     }
-
-    if (flag.dirty) {
-//      node.dirty()
-    }
   }
 
-  private fun setPosition(node: YogaNode, edge: YogaEdge, value: YogaValue?, flag: DirtyFlag) {
+  private fun setPosition(node: YogaNode, edge: YogaEdge, value: YogaValue?) {
     if (value != null && node.getPosition(edge) != value) {
-      flag.dirty = true
       when (value.unit) {
         YogaUnit.PERCENT -> node.setPositionPercent(edge, value.value)
         YogaUnit.POINT -> node.setPosition(edge, value.value)
@@ -323,9 +392,8 @@ data class Style(
     }
   }
 
-  private fun setPadding(node: YogaNode, edge: YogaEdge, value: YogaValue?, flag: DirtyFlag) {
+  private fun setPadding(node: YogaNode, edge: YogaEdge, value: YogaValue?) {
     if (value != null && node.getPadding(edge) != value) {
-      flag.dirty = true
       when (value.unit) {
         YogaUnit.PERCENT -> node.setPaddingPercent(edge, value.value)
         YogaUnit.POINT -> node.setPadding(edge, value.value)
@@ -334,16 +402,14 @@ data class Style(
     }
   }
 
-  private fun setBorder(node: YogaNode, edge: YogaEdge, value: Float?, flag: DirtyFlag) {
+  private fun setBorder(node: YogaNode, edge: YogaEdge, value: Float?) {
     if (value != null && node.getBorder(edge) != value) {
-      flag.dirty = true
       node.setBorder(edge, value)
     }
   }
 
-  private fun setMargin(node: YogaNode, edge: YogaEdge, value: YogaValue?, flag: DirtyFlag) {
+  private fun setMargin(node: YogaNode, edge: YogaEdge, value: YogaValue?) {
     if (value != null && node.getMargin(edge) != value) {
-      flag.dirty = true
       when (value.unit) {
         YogaUnit.PERCENT -> node.setMarginPercent(edge, value.value)
         YogaUnit.POINT -> node.setMargin(edge, value.value)
@@ -427,12 +493,7 @@ data class Style(
   }
 }
 
-private data class DirtyFlag(var dirty: Boolean)
-
-// TODO: multiply value by number of pixels to points...
-
 val metrics = Resources.getSystem().displayMetrics
-
 val dpToPx = metrics.densityDpi / 160f
 
 val Int.pct: YogaValue get() = YogaValue(this.toFloat(), YogaUnit.PERCENT)
