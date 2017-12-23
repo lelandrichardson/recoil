@@ -25,7 +25,6 @@ func isRunningInTestEnvironment() -> Bool {
  - touchable host component
  - textinput host component
  - better color handling
- - view transforms
  - better text font styling
  */
 
