@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -76,7 +76,7 @@
 
 /* Begin PBXFileReference section */
 		00F9E2D336F0C78D61F777E8A4D82636 /* Pods-RecoilApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-RecoilApp.release.xcconfig"; sourceTree = "<group>"; };
-		01ED955556DDBC7729E0120EDDAC4717 /* yoga.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = yoga.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		01ED955556DDBC7729E0120EDDAC4717 /* yoga.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = yoga.framework; path = Yoga.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0373DFF0E2CB6866738E7FC651798B98 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		096C7C39110A43C8A594B59BC630E07A /* yoga.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = yoga.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D3A0A626CFD0F8403B7CF337B926ADE /* YogaKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "YogaKit-dummy.m"; sourceTree = "<group>"; };
@@ -84,12 +84,12 @@
 		11892805C47FF8DD484EF1A5BB0C255A /* YGNodeList.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YGNodeList.h; path = yoga/YGNodeList.h; sourceTree = "<group>"; };
 		1429A213846419C20C28A2F63DFD64D1 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EA1229D7257577DE329F7B216005C42 /* Pods-RecoilApp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-RecoilApp-resources.sh"; sourceTree = "<group>"; };
-		275AD068A0B932F7F3AF3CCBA366A3CD /* YogaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YogaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		275AD068A0B932F7F3AF3CCBA366A3CD /* YogaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = YogaKit.framework; path = YogaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DCC0CE865076C8E7CA5CF0E596DAFBA /* YGLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YGLayout.h; path = YogaKit/Source/YGLayout.h; sourceTree = "<group>"; };
-		3520FF6D75545B5E7BD08BFCED62BAB7 /* Yoga.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Yoga.modulemap; sourceTree = "<group>"; };
+		3520FF6D75545B5E7BD08BFCED62BAB7 /* Yoga.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = Yoga.modulemap; sourceTree = "<group>"; };
 		4671E6A0CDF9C4859D560513272DCE55 /* Pods-RecoilApp-Recoil-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-RecoilApp-Recoil-resources.sh"; sourceTree = "<group>"; };
 		4A46372BD617022E482F23ECAA1DE173 /* YogaKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = YogaKit.xcconfig; sourceTree = "<group>"; };
-		5071E4AD699A68F366E086CDE300832B /* Pods-RecoilApp.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-RecoilApp.modulemap"; sourceTree = "<group>"; };
+		5071E4AD699A68F366E086CDE300832B /* Pods-RecoilApp.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-RecoilApp.modulemap"; sourceTree = "<group>"; };
 		518B420E30C97F4FB66AA3B4926F0621 /* YogaKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "YogaKit-prefix.pch"; sourceTree = "<group>"; };
 		521C5565372F71A6566F19FC7A62FEA3 /* UIView+Yoga.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+Yoga.h"; path = "YogaKit/Source/UIView+Yoga.h"; sourceTree = "<group>"; };
 		55F6D16EF82A2C9E6A15376FD993A5F9 /* YGMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YGMacros.h; path = yoga/YGMacros.h; sourceTree = "<group>"; };
@@ -98,30 +98,30 @@
 		5C87972020E0B50C6C7504BC8A0A2308 /* Pods-RecoilApp-Recoil-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-RecoilApp-Recoil-dummy.m"; sourceTree = "<group>"; };
 		6104ED7E045983C97587BCBBE68ABA4D /* Pods-RecoilApp-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-RecoilApp-frameworks.sh"; sourceTree = "<group>"; };
 		6D2CCCBAB20A919B69C24AC2AAE40149 /* Yoga-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Yoga-prefix.pch"; sourceTree = "<group>"; };
-		6EF9DF9B456B26A76E4BFA5B8DBDF5B9 /* Pods-RecoilApp-Recoil.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-RecoilApp-Recoil.modulemap"; sourceTree = "<group>"; };
+		6EF9DF9B456B26A76E4BFA5B8DBDF5B9 /* Pods-RecoilApp-Recoil.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-RecoilApp-Recoil.modulemap"; sourceTree = "<group>"; };
 		71827B975206DDE6F37D01FBC1CC81D0 /* YGEnums.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YGEnums.h; path = yoga/YGEnums.h; sourceTree = "<group>"; };
 		7BA7C35B88375E5FBC289189332B6F8E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		80A7B50525521ED60ED3469B6A171099 /* Pods-RecoilApp-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-RecoilApp-acknowledgements.markdown"; sourceTree = "<group>"; };
 		924D1410F2CAA72A9FB3E81335E3C5B7 /* Pods-RecoilApp-Recoil.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-RecoilApp-Recoil.debug.xcconfig"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		95F40A6B75F0B76620FFA317A5CDE27F /* Pods-RecoilApp-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-RecoilApp-umbrella.h"; sourceTree = "<group>"; };
 		99B91BF4EDE26466B9DBC4705CD09F41 /* Yoga.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Yoga.h; path = yoga/Yoga.h; sourceTree = "<group>"; };
 		9A6344863B6DBBFA86720D02FF303299 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		9BB18CE9C011C05DF1162BAC0E10A8F1 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE58DDB69BB90EB03410805DAD2B0566 /* Yoga.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Yoga.xcconfig; sourceTree = "<group>"; };
 		B48835221FCB48393B510260B50E9FA1 /* Pods-RecoilApp-Recoil.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-RecoilApp-Recoil.release.xcconfig"; sourceTree = "<group>"; };
-		B9414AEA575E839936E786FB1D883879 /* YGEnums.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = YGEnums.c; path = yoga/YGEnums.c; sourceTree = "<group>"; };
+		B9414AEA575E839936E786FB1D883879 /* YGEnums.c */ = {isa = PBXFileReference; includeInIndex = 1; name = YGEnums.c; path = yoga/YGEnums.c; sourceTree = "<group>"; };
 		BB004583C81A522B5FD8AFF3E199408C /* YogaKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "YogaKit-umbrella.h"; sourceTree = "<group>"; };
-		C1F5BA938A95F2ADA630C60D481D69DB /* YGNodeList.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = YGNodeList.c; path = yoga/YGNodeList.c; sourceTree = "<group>"; };
+		C1F5BA938A95F2ADA630C60D481D69DB /* YGNodeList.c */ = {isa = PBXFileReference; includeInIndex = 1; name = YGNodeList.c; path = yoga/YGNodeList.c; sourceTree = "<group>"; };
 		C5830BBE8E2FF7D438BCBA942A71ED24 /* Pods-RecoilApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-RecoilApp.debug.xcconfig"; sourceTree = "<group>"; };
 		C6B9FE38BF717658BDBE40970AC62131 /* Pods-RecoilApp-Recoil-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-RecoilApp-Recoil-acknowledgements.plist"; sourceTree = "<group>"; };
 		C958E537CFBA6D1F6511A1539A5DC1B5 /* Pods-RecoilApp-Recoil-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-RecoilApp-Recoil-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D2322A657C9430E6DE944392859812D0 /* UIView+Yoga.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+Yoga.m"; path = "YogaKit/Source/UIView+Yoga.m"; sourceTree = "<group>"; };
-		D7D1096F49BC82A0E54CF63FBB6407D8 /* Yoga.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = Yoga.c; path = yoga/Yoga.c; sourceTree = "<group>"; };
-		D8FA78D13F2E66F02FC0AB2C7EA25605 /* YogaKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = YogaKit.modulemap; sourceTree = "<group>"; };
-		DAABEB497589BB9B4D32E1AA07458B37 /* Pods_RecoilApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecoilApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7D1096F49BC82A0E54CF63FBB6407D8 /* Yoga.c */ = {isa = PBXFileReference; includeInIndex = 1; name = Yoga.c; path = yoga/Yoga.c; sourceTree = "<group>"; };
+		D8FA78D13F2E66F02FC0AB2C7EA25605 /* YogaKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = YogaKit.modulemap; sourceTree = "<group>"; };
+		DAABEB497589BB9B4D32E1AA07458B37 /* Pods_RecoilApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_RecoilApp.framework; path = "Pods-RecoilApp.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C7DA204A2DBCDA7FF4DF51CB4C03A7 /* Pods-RecoilApp-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-RecoilApp-dummy.m"; sourceTree = "<group>"; };
-		EA497D4D9055FEFC00FD0521C66E6C46 /* Pods_RecoilApp_Recoil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RecoilApp_Recoil.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA497D4D9055FEFC00FD0521C66E6C46 /* Pods_RecoilApp_Recoil.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_RecoilApp_Recoil.framework; path = "Pods-RecoilApp-Recoil.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC567E4F89DF9313E58F1A54781CCCCA /* Yoga-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Yoga-umbrella.h"; sourceTree = "<group>"; };
 		EDD6C42EAE8223201EB5AB9898F4C6C2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F50D99FE7E3699958E94D447050A249F /* Pods-RecoilApp-Recoil-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-RecoilApp-Recoil-umbrella.h"; sourceTree = "<group>"; };
@@ -230,6 +230,7 @@
 				5C64135D921AFAEA5EA62AD393A37340 /* YGLayoutExtensions.swift */,
 				886721F2E29B4BD18259A464F273F8FA /* Support Files */,
 			);
+			name = YogaKit;
 			path = YogaKit;
 			sourceTree = "<group>";
 		};
@@ -314,6 +315,7 @@
 				99B91BF4EDE26466B9DBC4705CD09F41 /* Yoga.h */,
 				60988AE6512F4FD2C2D8C24C830ED5B3 /* Support Files */,
 			);
+			name = Yoga;
 			path = Yoga;
 			sourceTree = "<group>";
 		};
@@ -721,7 +723,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -778,7 +780,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
