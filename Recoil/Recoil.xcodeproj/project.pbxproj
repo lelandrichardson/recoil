@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0C3D88E3374CB523F4A298FD /* Pods_RecoilApp_Recoil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A4E82C8606E3052289D07A1 /* Pods_RecoilApp_Recoil.framework */; };
-		2BDD1F6C23E8D9465ABAA863 /* Pods_Recoil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237ABB2C82453FCAE36A7546 /* Pods_Recoil.framework */; };
 		8432F55A1FE1D2AB00C67334 /* ViewHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F5591FE1D2AB00C67334 /* ViewHostView.swift */; };
 		8432F55C1FE1DA6F00C67334 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F55B1FE1DA6F00C67334 /* Text.swift */; };
 		8432F55E1FE1DA7B00C67334 /* TextHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432F55D1FE1DA7B00C67334 /* TextHostView.swift */; };
@@ -81,7 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BDD1F6C23E8D9465ABAA863 /* Pods_Recoil.framework in Frameworks */,
 				0C3D88E3374CB523F4A298FD /* Pods_RecoilApp_Recoil.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
