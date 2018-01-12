@@ -42,11 +42,11 @@ class App: Component<AppProps, AppState> {
     ]
     let toInsert = h(View.self, key: 2, ViewProps()
       .style(styles.yellow)
-      .onPress({ [weak self] in
+      .onPress { [weak self] in
         self?.setState { state in
           return AppState(count: state.count + 1 )
         }
-      })
+      }
     ) {[
       h(Text.self, TextProps()) {[
         h("Count: "),
@@ -73,9 +73,9 @@ private struct Styles {
     .transform([
       .rotateZ(30, .deg),
     ])
-  let green = Style().backgroundColor(.uiColor(UIColor.green))
-  let red = Style().backgroundColor(.uiColor(UIColor.red))
-  let yellow = Style().backgroundColor(.uiColor(UIColor.yellow))
+  let green = Style().backgroundColor(.uiColor(.green))
+  let red = Style().backgroundColor(.uiColor(.red))
+  let yellow = Style().backgroundColor(.uiColor(.yellow))
 }
 
 private let styles = Styles()

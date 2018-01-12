@@ -27,11 +27,11 @@ public enum Color {
       // TODO
       fatalError("Color.raw(String) is not implemented yet")
     case .black:
-      return UIColor.black
+      return .black
     case .white:
-      return UIColor.white
+      return .white
     case .clear:
-      return UIColor.clear
+      return .clear
     }
   }
 }
