@@ -31,10 +31,10 @@ private struct Styles {
   let child = Style()
     .width(60)
     .height(60)
-  let green = Style().backgroundColor(.uiColor(UIColor.green))
-  let red = Style().backgroundColor(.uiColor(UIColor.red))
-  let blue = Style().backgroundColor(.uiColor(UIColor.blue))
-  let purple = Style().backgroundColor(.uiColor(UIColor.purple))
+  let green = Style().backgroundColor(.uiColor(.green))
+  let red = Style().backgroundColor(.uiColor(.red))
+  let blue = Style().backgroundColor(.uiColor(.blue))
+  let purple = Style().backgroundColor(.uiColor(.purple))
 }
 
 private let styles = Styles()
