@@ -66,3 +66,7 @@ abstract class Component<Props, State>(override var props: Props): BaseComponent
   abstract fun getInitialState(): State
   abstract fun render(): Element?
 }
+
+abstract class StatelessComponent<Props>(override var props: Props): Component<Props, Unit>(props) {
+ override fun getInitialState() {}
+}
